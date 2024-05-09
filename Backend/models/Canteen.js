@@ -1,0 +1,33 @@
+// SuperAdmin will add this |ShopData|
+
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const CanteenSchema = new Schema({
+    shopname: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    email:{
+        type: String,
+        required: true
+    },
+    contact:{
+        type: String,
+        required: true
+    },
+    image:{
+        type: String,
+        required: true
+    },
+    description:{
+        type: String,
+        required: true
+    }
+}, {collection: 'Canteen'});
+
+module.exports = mongoose.model('Canteen', CanteenSchema);
