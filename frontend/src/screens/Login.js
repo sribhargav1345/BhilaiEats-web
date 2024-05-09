@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Cookies from "js-cookie";
-import image from "./background-login.jpeg";
-
 import { Link, useNavigate } from 'react-router-dom';
+
+import Navbar from "../components/Navbar";
 
 export default function Login() {
 
@@ -43,6 +43,7 @@ export default function Login() {
             return;
         }
 
+        Cookies.set("userType", cred.userType);
         Cookies.set("userEmail", cred.email);
         Cookies.set("authToken", result.authToken);
         Cookies.set("shopname", result.shopname);
@@ -76,7 +77,8 @@ export default function Login() {
     return (
         <div className='coloring'>
             <div className='login-container'>
-                <Navbar />
+                
+                <Navbar page={Login} />
                 <div className="container">
                     <div className="row justify-content-center mt-5">
                         <div className="col-md-5">
