@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Navbar from '../../components/Navbar';
+
 export default function Canteen() {
 
     const [formData, setFormData] = useState({
@@ -14,7 +16,7 @@ export default function Canteen() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-1.onrender.com/api/shopData", {
+        const response = await fetch("http://localhost:5000/api/shopData", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -39,7 +41,7 @@ export default function Canteen() {
 
     return (
         <div className='login-container' style={{ backgroundColor: "#dfd2d2" }}>
-            <Navbar />
+            <Navbar page={SuperAdmin}/>
             <div className='container'>
                 <div className="row justify-content-center mt-5">
                     <div className="col-md-6">

@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const Add_ItemSchema = new Schema({
-    shopname:{
-        type: String,
+const ItemsSchema = new Schema({
+    shop: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Canteen',
         required: true
     },
     categoryname:{
@@ -22,6 +23,6 @@ const Add_ItemSchema = new Schema({
         type: Array,
         required: true
     }
-}, { collection: 'add_items' });
+}, { collection: 'Items' });
 
-module.exports = mongoose.model('Add_item',Add_ItemSchema)
+module.exports = mongoose.model('Items',ItemsSchema)

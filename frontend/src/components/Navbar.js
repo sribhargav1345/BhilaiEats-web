@@ -6,10 +6,10 @@ import Modal from '../../Model';
 
 export default function Navbar({ page }) {
 
+    const navigate = useNavigate();
+
     const [cartView, setCartView] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const data = useCart();
-    const navigate = useNavigate();
 
     const handleLogout = () => {
 

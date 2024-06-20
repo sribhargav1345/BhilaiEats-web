@@ -17,7 +17,7 @@ export default function Admin() {
     const fetchFoodItems = async () => {
 
         try {
-            const response = await fetch(`https://bhilaieats-1.onrender.com/api/owner/${owner_id}`, {
+            const response = await fetch(`http://localhost:5000/api/owner/${owner_id}`, {
                 method: "GET",
                 headers: {
                     'Content-type': 'application/json'
@@ -48,7 +48,7 @@ export default function Admin() {
             const confirmed = window.confirm("Are you sure you want to remove this item?");
 
             if (confirmed) {
-                const response = await fetch(`https://bhilaieats-1.onrender.com/api/cards/${cardId}`, {
+                const response = await fetch(`http://localhost:5000/api/cards/${cardId}`, {
                     method: "DELETE",
                 });
 

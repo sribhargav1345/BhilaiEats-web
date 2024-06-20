@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
-const Admin = require("../models/Admin");
+const Admin = require("../models/Canteen");
 
 const { body, validationResult } = require("express-validator");
 
 const jwtSecret = process.env.JWT_SECRET || 'default';
 
 const authMiddleware = async(req,res,next) => {
+    
     const token = req.header('Authorization');
 
     if (!token) {
@@ -33,7 +34,7 @@ const validationRules = [
     }),
     body('name').isLength({ min: 4 }),
     body('password', 'Password must be of atleast 5 characters').isLength({ min: 5 }),
-    body('contact', 'Contact number length should be of 10').isLength({ min:10, max:10 })
+    body('contact', 'Contact must be of 10 digits').matches(/^\d+$/).isLength({ max:10 , min:10 })
 ] 
 
 const handleValidationErrors = (req, res, next) => {

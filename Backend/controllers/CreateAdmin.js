@@ -1,43 +1,66 @@
 const express = require('express');
-const router = express.Router()                                                            
-const Admin = require('../models/Admin');
+const router = express.Router();
 
 const jwt = require("jsonwebtoken");                                                                
-const bcrypt = require("bcryptjs");               
+const bcrypt = require("bcryptjs");           
 
+const Admin = require('../models/Canteen');
 const { handleValidationErrors, validationRules } = require('../middlewares/Admin');
 
-const jwtSecret = "HiNanna";                                                  
+const jwtSecret = process.env.JWT_SECRET_ADMIN || 'default_one'; 
+const jwtExpiration = '1h';
 
-router.post("/CreateAdmin" , validationRules, handleValidationErrors, async (req, res) => {
+
+const generateToken = (admin) => {
+    const tokenPayload = { admin: { type: 'Admin' , contact: admin.contact, email: admin.email, shopname: admin.shopname } };
+    return jwt.sign( tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
+};
+
+// Signup for Admin
+router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req, res) => {
 
     try {
-        const existingShop = await Admin.findOne({ shopname: req.body.shopname });
+
+        const { name, email, password, contact, shopname } = req.body;
+
+        const existingShop = await Admin.findOne({ shopname });
         
         if (existingShop) {
             console.log("Shopname is already Registered");
+            return res.status(400).json({ success: false, error: "Shopname Already Registered" });
+        }
+
+        const existingEmail = await Admin.findOne({ email });
+
+        if (existingEmail) {
+            console.log("Email is already Registered");
             return res.status(400).json({ success: false, error: "Email Already Registered" });
         }
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        await Admin.create({
-            name: req.body.name,
+        const newAdmin = await Admin.create({
+            name,
             password: hashedPassword,
-            email: req.body.email,
-            contact: req.body.contact,
-            shopname: req.body.shopname,
+            email,
+            contact,
+            shopname
         });
 
-        res.json({ success: true });
-    } catch (error) {
+        const authToken = generateToken(newAdmin); 
+
+        return res.json({ success: true, authToken: authToken }); 
+
+    } 
+    catch (error) {
         console.log(error);
         res.status(500).json({ success: false, error: 'Server error' });
     }
 });
 
-router.post("/loginAdmin", async (req, res) => {
+// Login for Admin
+router.post("/auth/loginAdmin", async (req, res) => {
 
     let email = req.body.email;                                                                    
 
@@ -54,16 +77,14 @@ router.post("/loginAdmin", async (req, res) => {
             return res.status(400).json({ errors: "Incorrect email or password" });                 
         }
 
-        const data = { admin: {id: adminData.id} };
+        const authToken = generateToken(adminData); 
 
-        const shopname = adminData.shopname;
+        return res.json({ success: true, authToken: authToken });                                  
 
-        const authToken = jwt.sign(data, jwtSecret);                                                
-        return res.json({ success: true, authToken: authToken, shopname: shopname });                                  
-
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error);
-        res.json({ success: false });                                                            
+        res.json({ success: false, error: "Server Error" });                                                            
     }
 });
 

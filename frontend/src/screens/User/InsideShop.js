@@ -7,6 +7,7 @@ import Footer from "../../components/Footer";
 import Food_User from "../../components/Cards/User/Food";
 
 export default function InsideShop() {
+    
     const { shop_id } = useParams();
 
     const [foodItems, setFoodItems] = useState([]);
@@ -17,7 +18,7 @@ export default function InsideShop() {
         const fetchFoodItems = async() => {
 
             try{
-                const response = await fetch(`https://bhilaieats-1.onrender.com/api/shop/${shop_id}`);
+                const response = await fetch(`http://localhost:5000/api/shop/${shop_id}`);
                 
                 const data = await response.json();
 
@@ -33,7 +34,8 @@ export default function InsideShop() {
 
     return (
         <div className="full-width-background">
-            <Navbar page={Home}/>
+
+            <Navbar page={props.Home}/>
 
             <div className='container'>
 

@@ -7,7 +7,8 @@ const validationRules = [
         }
         return true;
     }),
-    body('owner_contact', 'Length of phone number must be of 10 digits').matches(/^\d+$/).isLength({ max:10 , min:10 }),
+    body('contact', 'Contact must be exactly 10 digits long')
+        .matches(/^\d{10}$/)
 ]
 
 const handleValidationErrors = (req, res, next) => {

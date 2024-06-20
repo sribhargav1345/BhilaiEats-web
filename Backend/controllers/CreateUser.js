@@ -1,18 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const User = require("../models/UserSchema");
+const User = require("../models/Users");
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const { validationRules, handleValidationErrors, authMiddleware } = require('../middlewares/User');
+const { validationRules, handleValidationErrors } = require('../middlewares/User');
 
-const jwtSecret = process.env.JWT_SECRET || 'default_one';
+const jwtSecret = process.env.JWT_SECRET_USER || 'default_one';
 const jwtExpiration = '1h';
 
+const generateToken = (user) => {
+    const tokenPayload = { user: { type: 'User' , contact: user.contact, email: user.email } };
+    return jwt.sign(tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
+};
 
-router.post("/register", validationRules, handleValidationErrors, async(req, res) => {
+
+// Signup for User
+router.post("/auth/register", validationRules, handleValidationErrors, async(req, res) => {
 
     try{
         const is_exist_email = await User.findOne({ email: req.body.email });
@@ -29,21 +35,26 @@ router.post("/register", validationRules, handleValidationErrors, async(req, res
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        await User.create({
+        const newUser = await User.create({
             name: req.body.name,
             password: hashedPassword,
             email: req.body.email,
             contact: req.body.contact
         });
 
-        res.json({ success: true });
+        const authToken = generateToken(newUser);
+
+        res.cookie('authToken', authToken, { httpOnly: true, secure: true });
+
+        return res.json({ success: true });
     }
     catch(err){
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
-router.post("/login", async (req, res) => {
+// Login for User
+router.post("/auth/login", async (req, res) => {
 
     const {email, password} = req.body;
     try{
@@ -58,19 +69,14 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ error: "Email and Password didn't match "});
         }
 
-        const tokenPayload = { user: { id: Userdata.id, email: Userdata.email } };
-        const authToken = jwt.sign(tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
+        const authToken = generateToken(Userdata);
 
-        return res.json({ success: true, authToken });
+        res.json({ success: true, authToken });
     }
     catch(err){
         console.log(err);
         res.status(500).json({ success: false, err: "Internal Server Error"});
     }
-});
-
-router.get("/protected", authMiddleware, (req, res) => {
-    res.json({ success: true, message: "You are authorized to access this route", user: req.user });
 });
 
 module.exports = router;

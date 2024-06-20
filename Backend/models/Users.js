@@ -18,14 +18,10 @@ const UserSchema = new Schema({
     contact: {
         type: String,
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     cart: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CartSchema'
+        ref: 'Cart'
     }
 });
 
-module.exports = mongoose.model('UserSchema', UserSchema);
+module.exports = mongoose.model('Users', UserSchema);

@@ -1,5 +1,3 @@
-// SuperAdmin will add this |ShopData|
-
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -27,6 +25,10 @@ const CanteenSchema = new Schema({
     description:{
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 }, {collection: 'Canteen'});
 

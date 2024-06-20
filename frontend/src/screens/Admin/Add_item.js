@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 
+import Navbar from '../../components/Navbar';
+
 export default function Add_item() {
 
     const [formData, setFormData] = useState({ categoryname: "", name: "", image: "", options: [{ size: "", price: "" }] });
@@ -11,7 +13,7 @@ export default function Add_item() {
 
         var shopname = Cookies.get('shopname');
 
-        const response = await fetch("https://bhilaieats-1.onrender.com/api/CreateFood", {
+        const response = await fetch("http://localhost:5000/api/CreateFood", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -62,7 +64,7 @@ export default function Add_item() {
 
     return (
         <div className='login-container'>
-            <Navbar />
+            <Navbar page={Admin}/>
             <div className='container'>
                 <div className="row justify-content-center mt-5">
                     <div className="col-md-6">

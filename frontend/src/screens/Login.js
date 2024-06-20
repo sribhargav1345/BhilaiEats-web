@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Cookies from "js-cookie";
+
 import { Link, useNavigate } from 'react-router-dom';
 
 import Navbar from "../components/Navbar";
@@ -15,15 +16,16 @@ export default function Login() {
 
         let apiUrl = "";
         if (cred.userType === "user") {
-            apiUrl = "https://bhilaieats-1.onrender.com/api/loginUser";
+            apiUrl = "http://localhost:5000/api/loginUser";
         }
-        else if (cred.userType === "admin") {
+        else if (cred.userType === "admin") 
+        {
             if (cred.email === "sribhargavof03@gmail.com" || cred.email === "mitulvardhan@iitbhilai.ac.in") {
-                apiUrl = "https://bhilaieats-1.onrender.com/api/loginSuperAdmin";
+                apiUrl = "http://localhost:5000/api/loginSuperAdmin";
                 console.log("I'm a SuperAdmin");
             }
             else {
-                apiUrl = "https://bhilaieats-1.onrender.com/api/loginAdmin";
+                apiUrl = "http://localhost:5000/api/loginAdmin";
                 console.log("I'm an admin");
             }
         }
@@ -48,8 +50,8 @@ export default function Login() {
         Cookies.set("authToken", result.authToken);
         Cookies.set("shopname", result.shopname);
 
-        if (apiUrl === "https://bhilaieats-1.onrender.com/api/loginAdmin") {
-            const ownersResponse = await fetch("https://bhilaieats-1.onrender.com/api/owners");
+        if (apiUrl === "http://localhost:5000/api/loginAdmin") {
+            const ownersResponse = await fetch("http://localhost:5000/api/owners");
             const ownersData = await ownersResponse.json();
 
             for (const ownerArray of ownersData) {
@@ -61,7 +63,7 @@ export default function Login() {
                     }
                 }
             }
-        } else if (apiUrl === "https://bhilaieats-1.onrender.com/api/loginSuperAdmin") {
+        } else if (apiUrl === "http://localhost:5000/api/loginSuperAdmin") {
             navigate('/superadmin');
             return;
         }
@@ -100,18 +102,18 @@ export default function Login() {
 
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                                                <input type="email" className="form-control" name='email' value={credentials.email} onChange={onChange} id="exampleInputEmail1" aria-describedby="emailHelp" />
+                                                <input type="email" className="form-control" name='email' value={cred.email} onChange={onChange} id="exampleInputEmail1" aria-describedby="emailHelp" />
                                                 <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                                             </div>
 
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                                <input type="password" className="form-control" name='password' value={credentials.password} onChange={onChange} id="exampleInputPassword1" />
+                                                <input type="password" className="form-control" name='password' value={cred.password} onChange={onChange} id="exampleInputPassword1" />
                                             </div>
 
                                             <div className='mb-3'>
                                                 <label htmlFor="userType" className="form-label">User Type</label>
-                                                <select className="form-control custom-select" name="userType" value={credentials.userType} onChange={onChange}>
+                                                <select className="form-control custom-select" name="userType" value={cred.userType} onChange={onChange}>
                                                     <option value="user">User</option>
                                                     <option value="admin">Admin</option>
                                                 </select>

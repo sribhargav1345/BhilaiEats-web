@@ -15,19 +15,19 @@ export default function Home() {
     useEffect(() => {
         const loadData = async() => {
             try{
-                const response = await fetch('https://bhilaieats-1.onrender.com/api/shopData', {
-                    method: "GET",                                                                  // Get doesn't contain body, only headers
+                const response = await fetch('http://localhost:5000/api/shops', {
+                    method: "GET",                                                                  
                     headers: {
                         'Content-Type': "application/json",
                     },
                 });
 
-                if(!response.ok){
+                if(!response.success){
                     throw new Error("Error fetching data");
                 }
 
-                const data = await response.json();
-                setShops(data[0]);      
+                const result = await response.json();
+                setShops(result.data);      
             }
             catch(err){
                 console.log("Error fetching data: ", err);
@@ -35,7 +35,7 @@ export default function Home() {
         };
 
         loadData();
-    }, []);
+    }, [shops]);
 
     const handleSearchChange = (searchValue) => {
         setSearch(searchValue);
@@ -44,9 +44,9 @@ export default function Home() {
     return(
         <div className="coloring">
 
-            {Cookies.get(AuthToken) && Cookies.get(userType) === SuperAdmin ? (
+            {Cookies.get(authToken) && Cookies.get(userType) === Admin ? (
                 <Navbar page={SuperAdmin}/>
-            ): <Navbar page={User}/>}
+            ): <Navbar page={props.User}/>}
 
             <Carousel onSearchChange={handleSearchChange} />
             <div className="container">
