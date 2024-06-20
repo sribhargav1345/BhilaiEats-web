@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");           
 
 const Admin = require('../models/Canteen');
-const { handleValidationErrors, validationRules } = require('../middlewares/Admin');
+const { handleValidationErrors, validationRules, authMiddleware } = require('../middlewares/Admin');
 
 const jwtSecret = process.env.JWT_SECRET_ADMIN || 'default_one'; 
 const jwtExpiration = '1h';
@@ -26,19 +26,17 @@ router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req,
         const existingShop = await Admin.findOne({ shopname });
         
         if (existingShop) {
-            console.log("Shopname is already Registered");
             return res.status(400).json({ success: false, error: "Shopname Already Registered" });
         }
 
         const existingEmail = await Admin.findOne({ email });
 
         if (existingEmail) {
-            console.log("Email is already Registered");
             return res.status(400).json({ success: false, error: "Email Already Registered" });
         }
 
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const newAdmin = await Admin.create({
             name,
@@ -50,7 +48,9 @@ router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req,
 
         const authToken = generateToken(newAdmin); 
 
-        return res.json({ success: true, authToken: authToken }); 
+        res.cookie('authToken', authToken, { httpOnly: true, secure: false });
+
+        return res.json({ success: true });
 
     } 
     catch (error) {
@@ -78,7 +78,6 @@ router.post("/auth/loginAdmin", async (req, res) => {
         }
 
         const authToken = generateToken(adminData); 
-
         return res.json({ success: true, authToken: authToken });                                  
 
     } 
@@ -86,6 +85,10 @@ router.post("/auth/loginAdmin", async (req, res) => {
         console.log(error);
         res.json({ success: false, error: "Server Error" });                                                            
     }
+});
+
+router.get('/protected', authMiddleware, (req, res) => {
+    res.json({ message: 'This is a protected route', admin: req.admin });
 });
 
 module.exports = router;    

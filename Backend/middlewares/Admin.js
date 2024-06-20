@@ -3,11 +3,11 @@ const Admin = require("../models/Canteen");
 
 const { body, validationResult } = require("express-validator");
 
-const jwtSecret = process.env.JWT_SECRET || 'default';
+const jwtSecret = process.env.JWT_SECRET_ADMIN || 'default';
 
 const authMiddleware = async(req,res,next) => {
     
-    const token = req.header('Authorization');
+    const token = req.cookies.authToken;
 
     if (!token) {
         return res.status(401).json({ error: 'Authorization denied' });
@@ -15,13 +15,27 @@ const authMiddleware = async(req,res,next) => {
 
     try {
         const decoded = jwt.verify(token, jwtSecret);
-        req.user = await Admin.findOne({ contact: decoded.user.contact });   
 
+        const user = await Admin.findOne({ email: decoded.user.email });
+
+        if(!user){
+            return res.status(404).json({ error: 'User not found, authorization denied' });
+        }
+
+        req.user = user; 
         next();
     } 
     catch (error) {
-        console.error(error);
-        res.status(401).json({ error: 'Invalid token' });
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Token expired, please log in again' });
+        } 
+        else if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: 'Invalid token, authorization denied' });
+        } 
+        else {
+            console.error('Unexpected error:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 };
 
