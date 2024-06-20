@@ -9,7 +9,7 @@ const { authMiddleware } = require('../middlewares/User');
 
 
 // Adding shops by SuperAdmin
-router.post("/shops", validationRules, handleValidationErrors,async(req,res) => {
+router.post("/shops", validationRules, handleValidationErrors, async(req,res) => {
 
     try{
         const { shopname, name, email, contact, image, description } = req.body;

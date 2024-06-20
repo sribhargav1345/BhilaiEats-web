@@ -4,7 +4,9 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");                                                                
 const bcrypt = require("bcryptjs");           
 
-const Admin = require('../models/Canteen');
+const Admin = require('../models/Admin');
+const Canteen = require("../models/Canteen");
+
 const { handleValidationErrors, validationRules, authMiddleware } = require('../middlewares/Admin');
 
 const jwtSecret = process.env.JWT_SECRET_ADMIN || 'default_one'; 
@@ -16,6 +18,7 @@ const generateToken = (admin) => {
     return jwt.sign( tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
 };
 
+
 // Signup for Admin
 router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req, res) => {
 
@@ -24,6 +27,15 @@ router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req,
         const { name, email, password, contact, shopname } = req.body;
 
         const existingShop = await Admin.findOne({ shopname });
+        const shop_added = await Canteen.findOne({ shopname });
+
+        if(!shop_added){
+            return res.status(400).json({ success: false, error: "Shop Not Added by SuperAdmin" });
+        }
+
+        if(email !== shop_added.email){
+            return res.status(400).json({ success: false, error: "Admin not Created by SuperAdmin" });
+        }
         
         if (existingShop) {
             return res.status(400).json({ success: false, error: "Shopname Already Registered" });
@@ -78,7 +90,10 @@ router.post("/auth/loginAdmin", async (req, res) => {
         }
 
         const authToken = generateToken(adminData); 
-        return res.json({ success: true, authToken: authToken });                                  
+
+        res.cookie('authToken', authToken, { httpOnly: true, secure: false });
+
+        return res.json({ success: true });                               
 
     } 
     catch (error) {
@@ -87,7 +102,14 @@ router.post("/auth/loginAdmin", async (req, res) => {
     }
 });
 
-router.get('/protected', authMiddleware, (req, res) => {
+// Logout for Admin
+router.post('/auth/logout-Admin', (req, res) => {
+    res.clearCookie('authToken', { httpOnly: true, secure: false });
+    return res.json({ success: true, message: 'Logged out successfully' });
+});
+
+
+router.get('/protected-admin', authMiddleware, (req, res) => {
     res.json({ message: 'This is a protected route', admin: req.admin });
 });
 

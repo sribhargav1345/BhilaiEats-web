@@ -81,6 +81,12 @@ router.post("/auth/login", async (req, res) => {
     }
 });
 
+// Logout for User
+router.post('/auth/logout', (req, res) => {
+    res.clearCookie('authToken', { httpOnly: true, secure: false });
+    return res.json({ success: true, message: 'Logged out successfully' });
+});
+
 // Protected Route
 router.get('/protected-user', authMiddleware, (req, res) => {
     res.json({ message: 'This is a protected route', user: req.user });

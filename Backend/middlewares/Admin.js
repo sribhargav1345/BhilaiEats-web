@@ -16,13 +16,13 @@ const authMiddleware = async(req,res,next) => {
     try {
         const decoded = jwt.verify(token, jwtSecret);
 
-        const user = await Admin.findOne({ email: decoded.user.email });
+        const admin = await Admin.findOne({ email: decoded.user.email });
 
-        if(!user){
-            return res.status(404).json({ error: 'User not found, authorization denied' });
+        if(!admin){
+            return res.status(404).json({ error: 'Admin not found, authorization denied' });
         }
 
-        req.user = user; 
+        req.admin = admin; 
         next();
     } 
     catch (error) {
