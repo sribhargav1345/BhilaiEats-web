@@ -1,0 +1,31 @@
+.link-shop-user{
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-shop{
+    width: '20rem';
+    max-width: '90%';
+    border-radius: '0px';
+    overflow: 'hidden';
+    margin: '10px';
+    border: '1px solid rgba(0, 0, 0, 0.15)';
+    padding: '10px';
+}
+
+.complete-shop{
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-image{
+    height: '200px';
+    object-fit: 'cover'
+}
+
+.card-body2 {
+    padding: 20px;
+    min-width: 90%; 
+    max-width: 20vw; 
+    height: auto;
+}
