@@ -24,38 +24,32 @@ router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req,
 
     try {
 
-        const { name, email, password, contact, shopname } = req.body;
+        const { email, password, code } = req.body;
 
-        const existingShop = await Admin.findOne({ shopname });
-        const shop_added = await Canteen.findOne({ shopname });
+        const existingShop = await Admin.findOne({ email });
+        const shop_added = await Canteen.findOne({ code });
 
         if(!shop_added){
-            return res.status(400).json({ success: false, error: "Shop Not Added by SuperAdmin" });
+            return res.status(400).json({ success: false, message: "Don't Enter Some Random Code" });
         }
 
         if(email !== shop_added.email){
-            return res.status(400).json({ success: false, error: "Admin not Created by SuperAdmin" });
+            return res.status(400).json({ success: false, message: "Verification of Code Failed" });
         }
         
         if (existingShop) {
-            return res.status(400).json({ success: false, error: "Shopname Already Registered" });
-        }
-
-        const existingEmail = await Admin.findOne({ email });
-
-        if (existingEmail) {
-            return res.status(400).json({ success: false, error: "Email Already Registered" });
+            return res.status(400).json({ success: false, message: "This Account Aldready Exists" });
         }
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newAdmin = await Admin.create({
-            name,
+            name: shop_added.name,
             password: hashedPassword,
             email,
             contact,
-            shopname
+            shopname: shop_added.shopname
         });
 
         const authToken = generateToken(newAdmin); 

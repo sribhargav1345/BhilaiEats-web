@@ -1,4 +1,6 @@
 const express = require('express');
+const { v4: uuidv4 } = require('uuid');
+
 const router = express.Router();
 
 const Canteen = require('../models/Canteen');
@@ -6,6 +8,11 @@ const Add_item = require("../models/Items");
 
 const { validationRules, handleValidationErrors } = require('../middlewares/Shops');
 const { authMiddleware } = require('../middlewares/User');
+
+
+function generateShortUuid() {
+    return uuidv4().replace(/-/g, '').slice(0, 6); 
+}
 
 
 // Adding shops by SuperAdmin
@@ -19,13 +26,16 @@ router.post("/shops", validationRules, handleValidationErrors, async(req,res) =>
             return res.status(400).json({ error: "Shop exists with the same name" });
         }
 
+        const code = generateShortUuid();
+
         const newShop = new Canteen({
             shopname,
             name,
             email,
             contact,
             image,
-            description
+            description,
+            code
         });
 
         await newShop.save();
