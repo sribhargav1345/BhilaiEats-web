@@ -16,7 +16,7 @@ export default function ShopCards(props) {
         setIsHovered(false);
     };
 
-    const destinationLink = Cookies.get('authToken') ? `/shop/${props.shop_id}` : '/login';
+    const destinationLink = Cookies.get('authToken') ? `/shop/${props.item._id}` : `/shop/${props.item._id}`;
 
     let item = props.item;
 

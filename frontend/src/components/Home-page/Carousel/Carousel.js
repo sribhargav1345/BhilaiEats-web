@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import burg from "../../Assests/choice1.jpg";
+import burg from "../../../Assests/choice1.jpg";
 
 import "./Carousel.css";  
 

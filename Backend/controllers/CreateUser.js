@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
 const User = require("../models/Users");
 const jwt = require('jsonwebtoken');
-
 const bcrypt = require('bcryptjs');
 const { validationRules, handleValidationErrors, authMiddleware } = require('../middlewares/User');
 
@@ -15,13 +13,11 @@ const generateToken = (user) => {
     return jwt.sign(tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
 };
 
-
 // Signup for User
 router.post("/auth/register", validationRules, handleValidationErrors, async(req, res) => {
     try {
-
         const is_exist_email = await User.findOne({ email: req.body.email });
-        const is_exist_number = await User.findOne({ contact: req.body.contact }); 
+        const is_exist_number = await User.findOne({ contact: req.body.contact });
 
         if (is_exist_email) {
             return res.status(400).json({ success: false, error: "Email already registered, try login" });
@@ -43,16 +39,18 @@ router.post("/auth/register", validationRules, handleValidationErrors, async(req
 
         const authToken = generateToken(newUser);
 
-        res.cookie('authToken', authToken, { httpOnly: true, secure: false });
+        res.cookie('authToken', authToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+        });
 
         return res.json({ success: true });
-    } 
-    catch (err) {
-        console.error('Error during registration:', err); 
+    } catch (err) {
+        console.error('Error during registration:', err);
         res.status(500).json({ success: false, error: "Internal Server Error" });
     }
 });
-
 
 // Login for User
 router.post("/auth/login", async (req, res) => {
@@ -71,11 +69,14 @@ router.post("/auth/login", async (req, res) => {
 
         const authToken = generateToken(Userdata);
 
-        res.cookie('authToken', authToken, { httpOnly: true, secure: false });
+        res.cookie('authToken', authToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+        });
 
         return res.json({ success: true });
-    } 
-    catch (err) {
+    } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ success: false, error: "Internal Server Error" });
     }
@@ -83,7 +84,7 @@ router.post("/auth/login", async (req, res) => {
 
 // Logout for User
 router.post('/auth/logout', (req, res) => {
-    res.clearCookie('authToken', { httpOnly: true, secure: false });
+    res.clearCookie('authToken');
     return res.json({ success: true, message: 'Logged out successfully' });
 });
 

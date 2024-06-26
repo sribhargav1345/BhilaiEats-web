@@ -9,7 +9,11 @@ const port = 5000;
 
 const mongoDB = require("./db");
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Replace with your front-end URL
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+}));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());

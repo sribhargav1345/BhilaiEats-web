@@ -13,14 +13,14 @@ const jwtSecret = process.env.JWT_SECRET_ADMIN || 'default_one';
 const jwtExpiration = '1h';
 
 
-const generateToken = (admin) => {
-    const tokenPayload = { admin: { type: 'Admin' , contact: admin.contact, email: admin.email, shopname: admin.shopname } };
+const generateToken = (user) => {
+    const tokenPayload = { user: { type: 'Admin' , contact: user.contact, email: user.email, shopname: user.shopname } };
     return jwt.sign( tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
 };
 
 
 // Signup for Admin
-router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req, res) => {
+router.post("/auth/Admin" , async (req, res) => {
 
     try {
 
@@ -48,7 +48,7 @@ router.post("/auth/Admin" , validationRules, handleValidationErrors, async (req,
             name: shop_added.name,
             password: hashedPassword,
             email,
-            contact,
+            contact: shop_added.contact,
             shopname: shop_added.shopname
         });
 

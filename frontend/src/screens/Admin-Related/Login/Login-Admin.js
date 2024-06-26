@@ -1,8 +1,8 @@
 import React from 'react';
-import "./Login.css";
+import "./Login-Admin.css";
 
-import order from "../../Assests/choice3.jpg";
-import LoginForm from "../../components/Login/Login";
+import order from "../../../Assests/choice3.jpg";
+import LoginForm from "../../../components/Admin-Related/Login/Login";
 
 export default function Login() {
 

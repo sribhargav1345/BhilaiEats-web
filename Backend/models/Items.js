@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ItemsSchema = new Schema({
-    shop: {
+    shopId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Canteen',
+        required: true
+    },
+    shop:{
+        type: String,
         required: true
     },
     categoryname:{

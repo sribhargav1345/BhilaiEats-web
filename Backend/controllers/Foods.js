@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Item = require("../models/Items");
 const Canteen = require("../models/Canteen");
+const Category = require("../models/Categories");
 
 const { validationRules, handleValidationErrors } = require('../middlewares/Food');
 const { authMiddleware } = require('../middlewares/Admin');
@@ -13,12 +14,32 @@ router.post("/add", validationRules, handleValidationErrors, authMiddleware, asy
     try {
         const { shop, categoryname, name, image, options } = req.body;
 
-        const existingItem = await Item.findOne({ shop, categoryname, name });
+        const canteen = await Canteen.findOne({ shopname: shop });
+        if (!canteen) {
+            return res.status(404).json({ success: false, error: "Shop not found" });
+        }
+
+        const existingItem = await Item.findOne({ shopId: canteen._id, categoryname, name });
         if (existingItem) {
             return res.status(400).json({ success: false, error: "Food Item already present" });
         }
 
+        const shopId = canteen._id;
+
+        const existingCategory = await Category.findOne({ shopId, categoryname });
+        if(!existingCategory) {
+            const newCategory = new Category({
+                shopId,
+                shop,
+                categoryname,
+                image
+            });
+
+            await newCategory.save();
+        }
+
         const newItem = new Item({
+            shopId,
             shop,
             categoryname,
             name,
@@ -32,6 +53,17 @@ router.post("/add", validationRules, handleValidationErrors, authMiddleware, asy
     } 
     catch (err) {
         console.error('Error adding food item:', err);
+        res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+});
+
+router.get("/categories", async(req,res) => {
+    try{
+        const categories = await Category.find();
+        return res.status(200).json({success:true, data:categories});
+    }
+    catch{
+        console.error('Error retrieving Categories:', err);
         res.status(500).json({ success: false, error: "Internal Server Error" });
     }
 });

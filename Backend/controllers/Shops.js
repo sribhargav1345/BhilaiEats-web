@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
 
 const Canteen = require('../models/Canteen');
-const Add_item = require("../models/Items");
+const Items = require("../models/Items");
 
 const { validationRules, handleValidationErrors } = require('../middlewares/Shops');
 const { authMiddleware } = require('../middlewares/User');
@@ -63,7 +63,7 @@ router.get("/shops", async(req,res) => {
 
 
 // Getting specific shop Items present
-router.get("/shop/:shop_id", authMiddleware, async(req,res) => {
+router.get("/shop/:shop_id", async(req,res) => {
 
     try{
         const { shop_id } = req.params;
@@ -73,7 +73,7 @@ router.get("/shop/:shop_id", authMiddleware, async(req,res) => {
             return res.status(400).json({ error: "Shop not found" });
         }
 
-        const items = await Add_item.find({ shop: shop._id });
+        const items = await Items.find({ shopId: shop._id });
 
         return res.json({ success: true, shop, items });
     }

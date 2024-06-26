@@ -1,8 +1,8 @@
 import React from 'react';
-import "./Signup.css";
+import "./SignUp-Admin.css";
 
-import book_bg from "../../Assests/choice3.jpg";
-import SignUpForm from "../../components/Signup/Signup";
+import book_bg from "../../../Assests/choice3.jpg";
+import SignUpForm from "../../../components/Admin-Related/SignUp/SignUp";
 
 export default function Login() {
 

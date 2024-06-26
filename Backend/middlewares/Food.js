@@ -1,8 +1,6 @@
 const { body, validationResult } = require("express-validator");
 
 const validationRules = [
-    body('name').isLength({ min:3 }),
-    body('image').isLength({ min:5 }),
     body('options').isArray({ min:1 })
 ];
 
