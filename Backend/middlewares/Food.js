@@ -1,8 +1,4 @@
-const { body, validationResult } = require("express-validator");
-
-const validationRules = [
-    body('options').isArray({ min:1 })
-];
+const { validationResult } = require("express-validator");
 
 const handleValidationErrors = (req, res, next) => {
     const errors = validationResult(req);
@@ -13,6 +9,5 @@ const handleValidationErrors = (req, res, next) => {
 }; 
 
 module.exports = {
-    validationRules,
     handleValidationErrors
 };

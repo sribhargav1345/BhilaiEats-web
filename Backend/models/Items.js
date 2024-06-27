@@ -15,6 +15,9 @@ const ItemsSchema = new Schema({
         type: String,
         required: true
     },
+    veg:{
+        type: Boolean,
+    },
     name:{
         type: String,
         required: true
@@ -23,8 +26,11 @@ const ItemsSchema = new Schema({
         type: String,
         required: true
     },
-    options:{
-        type: Array,
+    quantity: {
+        type: String,
+    },
+    price: {
+        type: Number,
         required: true
     }
 }, { collection: 'Items' });

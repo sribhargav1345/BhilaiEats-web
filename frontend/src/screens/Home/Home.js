@@ -49,7 +49,7 @@ export default function Home() {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        <h2 className="first-heading"> Restaurants </h2>
+                        <h1 className="first-heading"> Restaurants </h1>
                         <hr className="my-2 dark-font-color" />
                     </div>
                 </div>

@@ -5,14 +5,14 @@ const Item = require("../models/Items");
 const Canteen = require("../models/Canteen");
 const Category = require("../models/Categories");
 
-const { validationRules, handleValidationErrors } = require('../middlewares/Food');
+const { handleValidationErrors } = require('../middlewares/Food');
 const { authMiddleware } = require('../middlewares/Admin');
 
 // Addition of Foods by shop owner
-router.post("/add", validationRules, handleValidationErrors, authMiddleware, async (req, res) => {
+router.post("/add", handleValidationErrors, authMiddleware, async (req, res) => {
 
     try {
-        const { shop, categoryname, name, image, options } = req.body;
+        const { shop, categoryname, name, image, price, quantity, veg } = req.body;
 
         const canteen = await Canteen.findOne({ shopname: shop });
         if (!canteen) {
@@ -44,7 +44,9 @@ router.post("/add", validationRules, handleValidationErrors, authMiddleware, asy
             categoryname,
             name,
             image,
-            options
+            price,
+            quantity,
+            veg
         });
 
         await newItem.save();

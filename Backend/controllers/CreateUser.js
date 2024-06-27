@@ -40,9 +40,9 @@ router.post("/auth/register", validationRules, handleValidationErrors, async(req
         const authToken = generateToken(newUser);
 
         res.cookie('authToken', authToken, {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
+            sameSite: 'Lax',
         });
 
         return res.json({ success: true });
@@ -70,9 +70,9 @@ router.post("/auth/login", async (req, res) => {
         const authToken = generateToken(Userdata);
 
         res.cookie('authToken', authToken, {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict',
+            sameSite: 'Lax',
         });
 
         return res.json({ success: true });

@@ -2,14 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import "./InsideShops.css";
 
-import Navbar from "../../components/Home-page/Navbar/Navbar";
-import FoodCard from "../../components/InsideShops-User/FoodCard";
+import Fuse from "fuse.js";
+
+import Navbar from "../../components/InsideShops-User/Navbar/Navbar";
+import CardShop from '../../components/InsideShops-User/CardShop/CardShop';
+import Sidebar from '../../components/InsideShops-User/SideBar/SideBar';
+import MenuItem from '../../components/InsideShops-User/Menu/Menu';
 
 export default function InsideShops() {
 
     const { shop_id } = useParams();
     const [items, setItems] = useState([]);
     const [shop, setShop] = useState({});
+    const [categories, setCategories] = useState([]);
+
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
 
@@ -29,7 +36,9 @@ export default function InsideShops() {
                 }
                 
                 setShop(result.shop);
+
                 setItems(result.items);
+                setCategories(result.categories);
             }
             catch (error) {
                 console.log(error);
@@ -40,21 +49,27 @@ export default function InsideShops() {
 
     }, [shop_id]);
 
+    const fuse = new Fuse(items, {
+        keys: ['name'],
+        threshold: 0.5
+    });
+
+    const filteredItems = searchQuery ? fuse.search(searchQuery).map(result => result.item) : items;
+
     return (
 
         <div>
-            {/* <Navbar page={None}/> */}
-            <div className='container'>
-                <div>
-                    <h2>{shop.shopname}</h2>
-                </div>
+            <Navbar />
+            <div className='container total-down'>
+                <CardShop shop={shop}/>
                 <div className='total-part'>
                     <div className='side-bar'>
-                        Hi
+                        <Sidebar categories={categories} setSearchQuery={setSearchQuery}/>
                     </div>
-                    <div className='foods-display'>
-                        {items.map(item => (
-                            <FoodCard key={item._id} item={item} />
+                    <hr className='separation' />
+                    <div className='foods-display ms-4'>
+                        {filteredItems.map(item => (
+                            <MenuItem key={item._id} item={item} />
                         ))}
                     </div>
                 </div>

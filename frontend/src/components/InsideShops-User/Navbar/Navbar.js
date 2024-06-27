@@ -33,7 +33,7 @@ export default function Navbar() {
                     alert("Invalid Token");
                 } 
 
-                if (decodedToken.exp > currentTime) {
+                if (decodedToken.exp > currentTime){
                     setIsAuthenticated(true);
                 } 
                 else {
@@ -103,7 +103,7 @@ export default function Navbar() {
                         )}
 
                         <div className={"collapse navbar-collapse" + (menuOpen ? " show" : "")} id="navbarSupportedContent">
-                            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
                                 {isAuthenticated ? (
                                     <div className="d-flex align-items-center">
                                         <li className="nav-item">
@@ -120,12 +120,7 @@ export default function Navbar() {
                                             </Link>
                                         </li>
                                     </div>
-                                ) : (
-                                    <div className="elements">
-                                        <Link to="/register" className="btn bg-white text-success mx-2"> Signup </Link>
-                                        <Link to="/login" className="btn bg-white text-success mx-2"> Login </Link>
-                                    </div>
-                                )}
+                                ) : (null)}
                             </ul>
                         </div>
                     </div>

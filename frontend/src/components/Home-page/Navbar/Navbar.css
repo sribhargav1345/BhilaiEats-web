@@ -24,6 +24,11 @@
     justify-content: space-between; /* Or adjust as needed */
 }
 
+#profile-icon{
+    height: 35px;
+    width: 35px;
+}
+
 @media (min-width: 469px) {
     .navbar-toggler {
         display: none;

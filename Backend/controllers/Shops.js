@@ -5,6 +5,7 @@ const router = express.Router();
 
 const Canteen = require('../models/Canteen');
 const Items = require("../models/Items");
+const Categories = require("../models/Categories");
 
 const { validationRules, handleValidationErrors } = require('../middlewares/Shops');
 const { authMiddleware } = require('../middlewares/User');
@@ -74,8 +75,9 @@ router.get("/shop/:shop_id", async(req,res) => {
         }
 
         const items = await Items.find({ shopId: shop._id });
+        const categories = await Categories.find({ shopId: shop._id });
 
-        return res.json({ success: true, shop, items });
+        return res.json({ success: true, shop, categories, items });
     }
     catch(err){
         console.error('Error fetching shop details:', err);

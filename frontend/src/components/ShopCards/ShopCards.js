@@ -36,9 +36,9 @@ export default function ShopCards(props) {
             >
                 <div className='complete-shop'>
                     <img src={item.image} className="shop-image" alt="Shop" />
-                    <div className="card-body card-body2">
-                        <h5 className="card-title">{item.shopname}</h5>
-                        <p className="card-text">{item.description}</p>
+                    <div className="card-body card-body-style">
+                        <h4 className="card-title title-style">{item.shopname}</h4>
+                        <p className="card-text text-style">{item.description}</p>
                         <hr />
                     </div>
                 </div>

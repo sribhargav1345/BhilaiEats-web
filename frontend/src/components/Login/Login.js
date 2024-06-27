@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-import Cookies from "js-cookie";
 import GoogleLoginButton from "./GoogleLogin";
 
 import './Login.css';
@@ -42,10 +41,6 @@ const LoginForm = () => {
             return;
         }
 
-        const verify = Cookies.get();
-        console.log(verify);
-
-        console.log("Successfull");
         navigate("/");
     };
 

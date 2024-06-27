@@ -23,9 +23,13 @@
     object-fit: 'cover'
 }
 
-.card-body2 {
+.card-body-style {
     padding: 20px;
     min-width: 90%; 
-    max-width: 20vw; 
+    max-width: 20vw;
     height: auto;
+}
+
+.title-style{
+    font-weight: 600;
 }
