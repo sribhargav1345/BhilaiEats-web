@@ -17,6 +17,7 @@ export default function InsideShops() {
     const [categories, setCategories] = useState([]);
 
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     useEffect(() => {
 
@@ -54,7 +55,11 @@ export default function InsideShops() {
         threshold: 0.5
     });
 
-    const filteredItems = searchQuery ? fuse.search(searchQuery).map(result => result.item) : items;
+    const filteredItems = items.filter(item => {
+        const matchesSearchQuery = searchQuery ? fuse.search(searchQuery).map(result => result.item).includes(item) : true;
+        const matchesCategory = selectedCategory ? item.categoryname === selectedCategory : true;
+        return matchesSearchQuery && matchesCategory;
+    });
 
     return (
 
@@ -64,7 +69,7 @@ export default function InsideShops() {
                 <CardShop shop={shop}/>
                 <div className='total-part'>
                     <div className='side-bar'>
-                        <Sidebar categories={categories} setSearchQuery={setSearchQuery}/>
+                        <Sidebar categories={categories} setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory}/>
                     </div>
                     <hr className='separation' />
                     <div className='foods-display ms-4'>

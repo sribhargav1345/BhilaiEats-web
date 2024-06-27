@@ -1,7 +1,40 @@
 .search-bar-insideshop{
-    width: 100%;
+    width: 90%;
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 4px;
+    margin-left: 12px;
+    border-radius: 6px;
     border: 1px solid #ccc;
+}
+
+.searching-here{
+    margin-top: 5vh;
+    padding: 10%;
+}
+
+
+
+.filter-categories{
+    padding: 10%;
+}
+
+.filter-categories ul {
+    list-style-type: disc; 
+    padding-left: 20px; 
+}
+
+.filter-categories li {
+    cursor: pointer;
+    padding: 5px 0;
+}
+  
+.filter-categories li:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+.filter-categories li.active {
+    font-weight: bold; 
+    text-decoration: underline; 
+    color: #007bff; 
 }

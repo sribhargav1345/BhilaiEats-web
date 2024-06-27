@@ -17,3 +17,8 @@
     width: 25px;
     margin-bottom: 2px;
 }
+
+.horizontal-line{
+    width: 150%; 
+    border: 1px solid #9d9d9d;
+}

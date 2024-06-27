@@ -18,7 +18,7 @@ const MenuItem = ({ item }) => {
         </div>
         <div className="menu-item-details">
           <div className='d-flex align-items-center'>
-            {item.veg !== undefined ? (item.veg === true ? <img src={vegIcon} alt="Veg" id='icon-veg' /> : <img src={nonvegIcon} alt="non-veg" id='icon-veg' />): (null) }
+            {item.veg !== undefined ? (item.veg === true ? <img src={vegIcon} alt="Veg" id='icon-veg' /> : <img src={nonvegIcon} alt="non-veg" id='icon-veg' />) : (null)}
             <h3 className='ms-2'>{item.name}</h3>
           </div>
           <div className='d-flex'>
@@ -29,7 +29,7 @@ const MenuItem = ({ item }) => {
           <button className='btn btn-md btn-warning'>Add</button>
         </div>
       </div>
-      <hr/>
+      <hr className='horizontal-line'/>
     </div>
   );
 };
