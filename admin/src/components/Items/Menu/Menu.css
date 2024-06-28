@@ -1,0 +1,24 @@
+.menu-item{
+    display: flex;
+}
+
+.item-image-menu{
+    height: 22vh;
+    width: 14vw;
+    margin-right: 2vw;
+}
+
+.menu-item-details{
+    margin-top: 2vh;
+}
+
+#icon-veg{
+    height: 25px;
+    width: 25px;
+    margin-bottom: 2px;
+}
+
+.horizontal-line{
+    width: 150%; 
+    border: 1px solid #9d9d9d;
+}

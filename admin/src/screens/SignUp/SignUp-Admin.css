@@ -1,0 +1,9 @@
+.picture{
+    width: 60%;
+}
+
+@media (max-width: 576px) {
+    .picture{
+        display: none;
+    }
+}

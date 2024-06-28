@@ -120,12 +120,7 @@ export default function Navbar() {
                                             </Link>
                                         </li>
                                     </div>
-                                ) : (
-                                    <div className="elements">
-                                        <Link to="/register" className="btn bg-white text-success mx-2"> Signup </Link>
-                                        <Link to="/login" className="btn bg-white text-success mx-2"> Login </Link>
-                                    </div>
-                                )}
+                                ) : (null)}
                             </ul>
                         </div>
                     </div>

@@ -1,0 +1,8 @@
+.total-part{
+    display: flex;
+}
+
+.side-bar{
+    width: 27%;
+    background-color: rgb(246, 246, 246);
+}
