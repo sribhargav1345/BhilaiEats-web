@@ -2,17 +2,24 @@ import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
+import { useSelector } from 'react-redux';
+
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode"; 
 
 import Logo from "../../../Assests/Logo.png";
 import UserIcon from "../../../Assests/user.png";
+import cart from "../../../Assests/cart.png";
 
 export default function Navbar() {
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 468);
+
+    const cartItems = useSelector(state => 
+        state.cart.cartItems
+    );
 
     useEffect(() => {
 
@@ -111,8 +118,11 @@ export default function Navbar() {
                                                 Logout
                                             </div>
                                         </li>
-                                        <div className="btn bg-white text-success mx-2">
-                                            My Cart
+                                        <div className="mx-2 cart-icon">
+                                            <Link to="/checkout">
+                                                <img src={cart} alt="cart" className="cart-icon-pic" id="carticonpic"/>
+                                                <span className="cart-icon-count"> {cartItems.length} </span>
+                                            </Link>
                                         </div>
                                         <li className="nav-item">
                                             <Link to="/userProfile" className="mx-2" title="Profile" id="profile-icon">

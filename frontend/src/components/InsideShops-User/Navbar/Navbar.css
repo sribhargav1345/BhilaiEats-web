@@ -29,6 +29,34 @@
     width: 35px;
 }
 
+
+.cart-icon {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 1rem;
+    color: black;
+}
+
+.cart-icon-pic {
+    width: 24px;
+    height: 24px;
+}
+
+.cart-icon-count {
+    color: blue; 
+    font-weight: bold;
+    position: absolute;
+    right: -10px;
+    top: -5px; 
+    font-size: 0.75rem; 
+    padding: 2px 4px;
+    background-color: rgb(122, 222, 122);
+    border-radius: 50%;
+}
+
+
+
 @media (min-width: 469px) {
     .navbar-toggler {
         display: none;
