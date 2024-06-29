@@ -33,7 +33,7 @@ const MenuItem = ({ item }) => {
             {item.quantity !== undefined ? (<span className='ms-2'> for {item.quantity} </span>) : (null)}
           </div>
           <p>{item.description}</p>
-          <button className='btn btn-md btn-warning' onClick={() => dispatch(addToCart(item), console.log(item))}>Add</button>
+          <button className='btn btn-md btn-warning' onClick={() => dispatch(addToCart(item))}>Add</button>
         </div>
       </div>
       <hr className='horizontal-line'/>

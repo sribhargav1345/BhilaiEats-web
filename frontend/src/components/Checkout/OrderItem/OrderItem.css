@@ -1,0 +1,86 @@
+/* General button styling */
+.quantity-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.quantity-btn:hover {
+    background-color: #e2e2e2;
+    border-color: #bbb;
+}
+
+.quantity-btn:active {
+    background-color: #d4d4d4;
+    border-color: #aaa;
+}
+
+/* Styling for the quantity input field */
+.quantity-input {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 5px;
+    font-size: 16px;
+}
+
+/* Aligning the buttons and input field */
+.quantity-controls {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Adding some margin to the cart item */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+/* Improving appearance for item names and prices */
+.cart-item-name {
+    flex-grow: 1;
+    font-size: 1em;
+    font-weight: 500;
+    margin-right: 20px;
+}
+
+.cart-item-price {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+}
+
+@media (max-width: 600px) {
+    .quantity-btn, .quantity-input {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+
+    .quantity-input {
+        width: 40px;
+    }
+
+    .cart-item-name {
+        margin-right: 10px;
+    }
+}

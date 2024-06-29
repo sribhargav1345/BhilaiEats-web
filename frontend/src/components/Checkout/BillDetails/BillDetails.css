@@ -1,0 +1,15 @@
+.bill-details {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+  
+  .bill-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .bill-item strong {
+    font-size: 1.2em;
+  }
+  

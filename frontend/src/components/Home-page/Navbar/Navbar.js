@@ -7,8 +7,15 @@ import {jwtDecode} from "jwt-decode";
 
 import Logo from "../../../Assests/Logo.png";
 import UserIcon from "../../../Assests/user.png";
+import cart from "../../../Assests/cart.png";
+
+import { useSelector } from "react-redux";
 
 export default function Navbar() {
+
+    const cartItems = useSelector(state => 
+        state.cart.cartItems
+    );
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -107,15 +114,18 @@ export default function Navbar() {
                                 {isAuthenticated ? (
                                     <div className="d-flex align-items-center">
                                         <li className="nav-item">
-                                            <div className="btn bg-white text-danger" onClick={handleLogout}>
+                                            <div className="btn bg-white text-danger mx-4" onClick={handleLogout}>
                                                 Logout
                                             </div>
                                         </li>
-                                        <div className="btn bg-white text-success mx-2">
-                                            My Cart
+                                        <div className="mx-3 cart-icon">
+                                            <Link to="/checkout">
+                                                <img src={cart} alt="cart" className="cart-icon-pic" id="carticonpic"/>
+                                                <span className="cart-icon-count"> {cartItems.length} </span>
+                                            </Link>
                                         </div>
                                         <li className="nav-item">
-                                            <Link to="/userProfile" className="mx-2" title="Profile" id="profile-icon">
+                                            <Link to="/userProfile" className="mx-5" title="Profile" id="profile-icon">
                                                 <img src={UserIcon} alt="User" className="navbar-profile" id="profile-icon"/>
                                             </Link>
                                         </li>

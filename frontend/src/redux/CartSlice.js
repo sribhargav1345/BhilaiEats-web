@@ -3,51 +3,70 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     cartItems: [],
     cartTotalQuantity: 0,
-    cartTotalAmount: 0
+    cart_noofItems: 0,
+    cartTotalAmount: 0,
+    shop: null,
 };
 
 const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart : (state, action) => {
+        addToCart: (state, action) => {
 
             const item = action.payload;
+            
+            if (state.cartItems.length === 0 || state.shop === item.shop) {
 
-            console.log(state);
-            const existingItem = state.cartItems.find((cartItem) => cartItem._id === item._id);
+                const existingItemIndex = state.cartItems.findIndex(cartItem => cartItem._id === item._id);
 
-            if(existingItem){
-                existingItem.quantity += item.quantity;
-            }
-            else{
-                state.cartItems.push({ item });
-            }
-
-            console.log(state.cartItems);
-
-            state.cartTotalQuantity += 1;
-            state.cartTotalAmount += item.price;
-        },
-        removeFromCart : (state, action) => {
-            const item = action.payload;
-
-            const existingItem = state.cartItems.find(cartItem => cartItem._id === item._id);
-
-            if(existingItem){
-                if(existingItem.quantity > 1){
-                    existingItem.quantity -= 1;
+                if (existingItemIndex !== -1) {
+                    state.cartItems[existingItemIndex].qnty += 1;
+                } 
+                else {
+                    const newItem = { ...item, qnty: 1 };
+                    state.cartItems.push(newItem);
+                    state.cart_noofItems += 1;
                 }
-                else{
-                    state.cartItems = state.cartItems.filter(cartItem => cartItem.id !== item._id);
+
+                state.cartTotalQuantity += 1;
+                state.cartTotalAmount += item.price;
+
+                if (state.cartItems.length === 1) {
+                    state.shop = item.shop;
+                }
+            } 
+            else {
+                throw new Error(`Cannot add items from different shops. Please clear your cart to add items from ${item.shop}`);
+            }
+        },
+        removeFromCart: (state, action) => {
+            
+            const item = action.payload;
+            const existingItemIndex = state.cartItems.findIndex(cartItem => cartItem._id === item._id);
+
+            if (existingItemIndex !== -1) {
+                const existingItem = state.cartItems[existingItemIndex];
+                if (existingItem.qnty > 1) {
+                    existingItem.qnty -= 1;
+                } else {
+                    state.cartItems.splice(existingItemIndex, 1);
+                    state.cart_noofItems -= 1;
                 }
 
                 state.cartTotalQuantity -= 1;
                 state.cartTotalAmount -= existingItem.price;
             }
+        },
+        clearCart: (state) => {
+            state.cartItems = [];
+            state.cartTotalQuantity = 0;
+            state.cart_noofItems = 0;
+            state.cartTotalAmount = 0;
+            state.shop = null;
         }
     }
 });
 
-export const { addToCart, removeFromCart }  = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
