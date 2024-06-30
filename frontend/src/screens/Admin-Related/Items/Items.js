@@ -17,7 +17,7 @@ export default function DynamicOwner() {
 
         try {
             setLoading(true);
-            const response = await fetch(`https://bhilaieats-web.onrender.com/api/owner/${owner_id}`, {
+            const response = await fetch(`http://localhost:5000/api/owner/${owner_id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

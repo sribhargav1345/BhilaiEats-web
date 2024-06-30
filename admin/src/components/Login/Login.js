@@ -23,7 +23,7 @@ const LoginForm = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/api/auth/loginAdmin", {
+        const response = await fetch("http://localhost:5000/api/auth/loginAdmin", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
