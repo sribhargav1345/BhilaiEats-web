@@ -41,6 +41,7 @@ app.use("/api", require("./controllers/CreateAdmin"));
 app.use("/api", require("./controllers/CreateUser"));
 app.use("/api", require("./controllers/Orders"));
 app.use("/api", require("./controllers/Shops"));
+app.use("/api", require("./controllers/CheckOut"));
 app.use("/api", require("./controllers/AdminFoods"));
 
 app.listen(port, () => {
