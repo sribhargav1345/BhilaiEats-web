@@ -9,7 +9,7 @@ const { handleValidationErrors } = require('../middlewares/Food');
 const { authMiddleware } = require('../middlewares/Admin');
 
 // Addition of Foods by shop owner
-router.post("/add", handleValidationErrors, authMiddleware, async (req, res) => {
+router.post("/add", handleValidationErrors,  async (req, res) => {
 
     try {
         const { shop, categoryname, name, image, price, quantity, veg } = req.body;
@@ -87,24 +87,5 @@ router.delete("/Item/:item_id", async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
-
-// Getting Foods of specific shop, I think this is present in Shops.js
-// router.get("/owner/:owner_id", authMiddleware, async(req,res) => {
-//     try { 
-//         const { owner_id } = req.params;
-//         const owner = await Canteen.findById(owner_id);
-
-//         if (!owner) {
-//             return res.status(404).json({ error: "Owner not found"});
-//         }
-
-//         const items = await Item.find({ shop: owner.shopname });
-//         return res.json({ success: true, owner, items });
-//     } 
-//     catch(err) {
-//         console.error('Error fetching items by owner:', err);
-//         res.status(500).json({ error: "Internal server error" });
-//     }
-// });
 
 module.exports = router;

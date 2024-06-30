@@ -83,7 +83,6 @@ const LoginForm = () => {
                         </div>
 
                         <button type="submit" className="submit-btn mb-3"> Submit </button>
-                        <p className='login-textp'>Are you a User? <a href="/login">Login here</a></p>
                     </form>
                 </div>
             </div>
