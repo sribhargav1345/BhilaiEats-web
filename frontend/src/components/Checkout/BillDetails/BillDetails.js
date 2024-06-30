@@ -1,8 +1,8 @@
 import React from 'react';
 import './BillDetails.css';
 
-const BillDetails = ({ total, deliveryFee, platformFee }) => {
-  const totalPrice = total + deliveryFee + platformFee;
+const BillDetails = ({ total, deliveryFee, GSTfee }) => {
+  const totalPrice = total + deliveryFee + GSTfee;
 
   return (
     <div className="bill-details">
@@ -15,8 +15,8 @@ const BillDetails = ({ total, deliveryFee, platformFee }) => {
         <span>₹{deliveryFee}</span>
       </div>
       <div className="bill-item">
-        <span>Platform Fee</span>
-        <span>₹{platformFee}</span>
+        <span>GST Fee</span>
+        <span>₹{GSTfee}</span>
       </div>
       <hr />
       <div className="bill-item">

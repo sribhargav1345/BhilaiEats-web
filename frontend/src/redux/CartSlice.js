@@ -15,10 +15,6 @@ const cartSlice = createSlice({
         addToCart: (state, action) => {
 
             const { item,shop } = action.payload;
-
-            console.log("Adding item:", item);
-            console.log("Current shop:", state.shop);
-            console.log("Incoming shop:", shop);
             
             if (state.cartItems.length === 0 || state.shop.shopname === item.shop) {
 

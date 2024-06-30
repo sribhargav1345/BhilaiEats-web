@@ -72,7 +72,7 @@ export default function InsideShops() {
 
         const loadItems = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/shops/${shopname}`, {
+                const response = await fetch(`https://bhilaieats-web.onrender.com/api/shops/${shopname}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
