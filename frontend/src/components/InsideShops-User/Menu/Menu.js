@@ -9,7 +9,7 @@ import unavailable from "../../../Assests/Unavailable.png";
 import vegIcon from "../../../Assests/veg-icon.png";
 import nonvegIcon from "../../../Assests/non-veg-icon.png";
 
-const MenuItem = ({ item }) => {
+const MenuItem = ({ item,shop }) => {
 
   const dispatch = useDispatch();     // This will store items in store file in redux.
   
@@ -33,7 +33,7 @@ const MenuItem = ({ item }) => {
             {item.quantity !== undefined ? (<span className='ms-2'> for {item.quantity} </span>) : (null)}
           </div>
           <p>{item.description}</p>
-          <button className='btn btn-md btn-warning' onClick={() => dispatch(addToCart(item))}>Add</button>
+          <button className='btn btn-md btn-warning' onClick={() => dispatch(addToCart({ item,shop }))}>Add</button>
         </div>
       </div>
       <hr className='horizontal-line'/>

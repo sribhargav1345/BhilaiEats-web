@@ -74,7 +74,7 @@ export default function InsideShops() {
                     <hr className='separation' />
                     <div className='foods-display ms-4'>
                         {filteredItems.map(item => (
-                            <MenuItem key={item._id} item={item} />
+                            <MenuItem key={item._id} item={item} shop={shop}/>
                         ))}
                     </div>
                 </div>

@@ -133,7 +133,7 @@ export default function Navbar() {
                                 ) : (
                                     <div className="elements">
                                         <Link to="/register" className="btn bg-white text-success mx-2"> Signup </Link>
-                                        <Link to="/login" className="btn bg-white text-success mx-2"> Login </Link>
+                                        <Link to="/login" className="btn bg-white text-success mx-4 me-5"> Login </Link>
                                     </div>
                                 )}
                             </ul>

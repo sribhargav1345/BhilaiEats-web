@@ -14,9 +14,13 @@ const cartSlice = createSlice({
     reducers: {
         addToCart: (state, action) => {
 
-            const item = action.payload;
+            const { item,shop } = action.payload;
+
+            console.log("Adding item:", item);
+            console.log("Current shop:", state.shop);
+            console.log("Incoming shop:", shop);
             
-            if (state.cartItems.length === 0 || state.shop === item.shop) {
+            if (state.cartItems.length === 0 || state.shop.shopname === item.shop) {
 
                 const existingItemIndex = state.cartItems.findIndex(cartItem => cartItem._id === item._id);
 
@@ -32,9 +36,7 @@ const cartSlice = createSlice({
                 state.cartTotalQuantity += 1;
                 state.cartTotalAmount += item.price;
 
-                if (state.cartItems.length === 1) {
-                    state.shop = item.shop;
-                }
+                state.shop = shop;
             } 
             else {
                 throw new Error(`Cannot add items from different shops. Please clear your cart to add items from ${item.shop}`);
@@ -56,6 +58,10 @@ const cartSlice = createSlice({
 
                 state.cartTotalQuantity -= 1;
                 state.cartTotalAmount -= existingItem.price;
+            }
+
+            if(state.cartItems.length === 0){
+                state.shop = null;
             }
         },
         clearCart: (state) => {
