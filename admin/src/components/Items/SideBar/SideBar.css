@@ -12,7 +12,15 @@
     padding: 10%;
 }
 
+.adding-items-here{
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
 
+.buttonto-add{
+    margin-left: 12px;
+}
 
 .filter-categories{
     padding: 10%;

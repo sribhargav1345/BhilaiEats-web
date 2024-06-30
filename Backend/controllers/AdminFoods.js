@@ -8,7 +8,7 @@ const Categories = require("../models/Categories");
 const { authMiddleware } = require('../middlewares/Admin');
 
 // Specifically for the admin purpose
-router.get("/shops/:shop_id", authMiddleware, async(req,res) => {
+router.get("/shops/:shop_id", async(req,res) => {
 
     try{
         const { shop_id } = req.params;

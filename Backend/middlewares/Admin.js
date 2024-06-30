@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const Admin = require("../models/Canteen");
+const Canteen = require("../models/Canteen");
+const Admin = require("../models/Admin");
 
 const { body, validationResult } = require("express-validator");
 
@@ -10,18 +11,20 @@ const authMiddleware = async(req,res,next) => {
     const token = req.cookies.authToken;
 
     if (!token) {
+        console.log("Token not present");
         return res.status(401).json({ error: 'Authorization denied' });
     }
 
     try {
         const decoded = jwt.verify(token, jwtSecret);
-        const admin = await Admin.findOne({ email: decoded.user.email });
+        const admin = await Canteen.findOne({ shopname: decoded.user.shopname, email: decoded.user.email });
 
         if(!admin){
+            console.log("Admin not found error", error);
             return res.status(404).json({ error: 'Admin not found, authorization denied' });
         }
 
-        req.admin = admin; 
+        req.user = admin; 
         next();
     } 
     catch (error) {

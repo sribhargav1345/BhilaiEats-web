@@ -1,78 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import "./Items.css";
-
-// import Cookies from "js-cookie";
-// import { jwtDecode } from 'jwt-decode';
 import Fuse from "fuse.js";
+import { useParams } from 'react-router-dom';
 
 import Navbar from "../../components/Items/Navbar/Navbar";
 import CardShop from '../../components/Items/CardShop/CardShop';
 import Sidebar from '../../components/Items/SideBar/SideBar';
 import MenuItem from '../../components/Items/Menu/Menu';
-// import { useNavigate } from 'react-router-dom';
 
-export default function InsideShops() {
-
-    const [items, setItems] = useState([]);
+export default function Items() {
+    const [foods, setFoods] = useState([]);
     const [shop, setShop] = useState({});
     const [categories, setCategories] = useState([]);
-
-    // const [shopname, setShopname] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
 
-    // let navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const checkAuthToken = async() => {
-
-    //         await new Promise(resolve => setTimeout(resolve, 1000));
-
-    //         const token = Cookies.get('authToken');
-            
-    //         console.log(token);
-    //         if (!token) {
-    //             navigate("/login");
-    //             return;
-    //         }
-
-    //         try {
-    //             const decodedToken = jwtDecode(token);
-    //             console.log('Decoded Token:', decodedToken);
-    //             const currentTime = Date.now() / 1000;
-
-    //             const shopname = decodedToken.user?.shopname;
-    //             if (!shopname) {
-    //                 Cookies.remove('authToken');
-    //                 alert("Invalid Token");
-    //                 navigate("/login");
-    //                 return;
-    //             }
-
-    //             if (decodedToken.exp <= currentTime) {
-    //                 Cookies.remove('authToken');
-    //                 console.log("Token Expired");
-    //                 navigate("/login");
-    //                 return;
-    //             }
-
-    //             setShopname(shopname);
-    //         } catch (error) {
-    //             console.error('Error decoding token:', error);
-    //             Cookies.remove('authToken');
-    //             navigate("/login");
-    //         }
-    //     };
-
-    //     checkAuthToken();
-    // }, [navigate]);
-    let shopname = "At Mart";
+    const { shop_id } = useParams();
 
     useEffect(() => {
-
         const loadItems = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/shops/${shopname}`, {
+                const response = await fetch(`http://localhost:5000/api/shops/${shop_id}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -80,29 +28,74 @@ export default function InsideShops() {
                 });
 
                 const result = await response.json();
-
                 if (!result.success) {
                     alert(result.message || "Error in Getting Items");
                 }
 
                 setShop(result.shop);
-                setItems(result.items);
+                setFoods(result.items);
                 setCategories(result.categories);
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
         loadItems();
+    }, [shop_id]);
 
-    }, [shopname]);
+    // Function to handle adding a new item
+    const addNewItem = async (newItem) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/shops/${shop_id}/items`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newItem)
+            });
 
-    const fuse = new Fuse(items, {
+            const result = await response.json();
+            if (!result.success) {
+                alert(result.message || "Error in Adding Item");
+                return;
+            }
+
+            // Append the new item to the foods list
+            setFoods([...foods, result.item]);
+        } catch (error) {
+            console.error('Error adding new item:', error);
+        }
+    };
+
+    // Function to handle removing an item
+    const handleRemoveItem = async (item_id) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/Item/${item_id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            const result = await response.json();
+            if (!result.success) {
+                alert(result.message || "Something went wrong");
+                return;
+            }
+
+            // Update the state to remove the deleted item
+            setFoods(foods.filter(item => item._id !== item_id));
+        } catch (error) {
+            console.error("Error removing item:", error);
+        }
+    };
+
+    const fuse = new Fuse(foods, {
         keys: ['name'],
         threshold: 0.5
     });
 
-    const filteredItems = items.filter(item => {
+    const filteredItems = foods.filter(item => {
         const matchesSearchQuery = searchQuery ? fuse.search(searchQuery).map(result => result.item).includes(item) : true;
         const matchesCategory = selectedCategory ? item.categoryname === selectedCategory : true;
         return matchesSearchQuery && matchesCategory;
@@ -115,16 +108,25 @@ export default function InsideShops() {
                 <CardShop shop={shop} />
                 <div className='total-part'>
                     <div className='side-bar'>
-                        <Sidebar categories={categories} setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} />
+                        <Sidebar 
+                            categories={categories} 
+                            setSearchQuery={setSearchQuery} 
+                            setSelectedCategory={setSelectedCategory} 
+                            addNewItem={addNewItem}  
+                        />
                     </div>
                     <hr className='separation' />
                     <div className='foods-display ms-4'>
                         {filteredItems.map(item => (
-                            <MenuItem key={item._id} item={item} />
+                            <MenuItem 
+                                key={item._id} 
+                                item={item} 
+                                handleRemoveItem={() => handleRemoveItem(item._id)} 
+                            />
                         ))}
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

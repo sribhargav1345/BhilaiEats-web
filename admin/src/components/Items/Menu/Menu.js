@@ -5,7 +5,8 @@ import unavailable from "../../../Assests/Unavailable.png";
 import vegIcon from "../../../Assests/veg-icon.png";
 import nonvegIcon from "../../../Assests/non-veg-icon.png";
 
-const MenuItem = ({ item }) => {
+const MenuItem = ({ item, handleRemoveItem }) => {
+
   return (
     <div>
       <div className="menu-item m-3">
@@ -26,10 +27,13 @@ const MenuItem = ({ item }) => {
             {item.quantity !== undefined ? (<span className='ms-2'> for {item.quantity} </span>) : (null)}
           </div>
           <p>{item.description}</p>
-          <button className='btn btn-md btn-warning'>Add</button>
+          <div className='d-flex'>
+            <button className='btn btn-md btn-warning me-2'>Edit</button>
+            <button className='btn btn-md btn-danger' onClick={handleRemoveItem}>Remove</button>
+          </div>
         </div>
       </div>
-      <hr className='horizontal-line'/>
+      <hr className='horizontal-line' />
     </div>
   );
 };

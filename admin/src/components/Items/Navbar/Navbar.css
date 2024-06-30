@@ -1,19 +1,21 @@
-.items{
+.items {
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Ensures space between logo and the nav items */
+    width: 100%; /* Takes full width */
 }
 
-.navbar{
+.navbar {
     background-color: rgb(254, 241, 216);
 }
 
-.navbar-logo{
+.navbar-logo {
     height: 50px;
     width: 50px;
     margin-left: 20px;
 }
 
-.heading{
+.heading {
     margin-left: 20px;
     font-size: 2rem;
     font-weight: 600;
@@ -21,12 +23,50 @@
 
 .navbar-collapse {
     display: flex;
-    justify-content: space-between; /* Or adjust as needed */
+    justify-content: flex-end; /* Align items to the right */
+    flex-grow: 1; 
 }
 
-#profile-icon{
+.navbar-collapse.show {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+}
+
+#profile-icon {
     height: 35px;
     width: 35px;
+}
+
+.cart-icon {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 1rem;
+    color: black;
+    margin-right: 15px; 
+}
+
+.cart-icon-pic {
+    width: 24px;
+    height: 24px;
+}
+
+.cart-icon-count {
+    color: blue; 
+    font-weight: bold;
+    position: absolute;
+    right: -10px;
+    top: -5px; 
+    font-size: 0.75rem; 
+    padding: 2px 4px;
+    background-color: rgb(122, 222, 122);
+    border-radius: 50%;
+}
+
+.nav-item .btn {
+    margin: 0 10px; 
 }
 
 @media (min-width: 469px) {
@@ -37,6 +77,10 @@
     .navbar-collapse {
         display: flex !important;
     }
+
+    .navbar-collapse.show {
+        display: flex
+    }
 }
 
 @media (max-width: 468px) {
@@ -46,5 +90,13 @@
 
     .navbar-collapse.show {
         display: block !important;
+    }
+
+    .navbar-brand, .navbar-logo {
+        margin: 0 auto; 
+    }
+
+    .cart-icon, .nav-item .btn, #profile-icon {
+        margin: 10px 0;
     }
 }

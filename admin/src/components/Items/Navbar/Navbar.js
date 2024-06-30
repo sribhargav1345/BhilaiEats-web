@@ -91,41 +91,43 @@ export default function Navbar() {
             <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid">
                     <div className="items">
-                        <img src={Logo} alt="." className="navbar-logo" />
+                        <img src={Logo} alt="Logo" className="navbar-logo" />
                         <Link className="navbar-brand fs-3 fst-italic heading" to="/">
                             BhilaiEats
                         </Link>
-
+    
                         {isSmallScreen && (
                             <button className="navbar-toggler ml-auto" type="button" onClick={toggleMenu}>
                                 <span className="navbar-toggler-icon"></span>
                             </button>
                         )}
-
+    
                         <div className={"collapse navbar-collapse" + (menuOpen ? " show" : "")} id="navbarSupportedContent">
-                            <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+                            <ul className="navbar-nav">
                                 {isAuthenticated ? (
-                                    <div className="d-flex align-items-center">
+                                    <div className="d-flex align-items-center ml-auto">
+                                        <li className="nav-item cart-icon mx-3">
+                                            <Link to="/order-requests">
+                                                <button className="btn btn-success"> Order Requests </button>
+                                            </Link>
+                                        </li>
                                         <li className="nav-item">
-                                            <div className="btn bg-white text-danger" onClick={handleLogout}>
+                                            <div className="btn bg-white text-danger mx-3 me-5" onClick={handleLogout}>
                                                 Logout
                                             </div>
                                         </li>
-                                        <div className="btn bg-white text-success mx-2">
-                                            My Cart
-                                        </div>
-                                        <li className="nav-item">
-                                            <Link to="/userProfile" className="mx-2" title="Profile" id="profile-icon">
-                                                <img src={UserIcon} alt="User" className="navbar-profile" id="profile-icon"/>
-                                            </Link>
-                                        </li>
                                     </div>
-                                ) : (null)}
+                                ) : (
+                                    <div className="d-flex elements">
+                                        <Link to="/register" className="btn bg-white text-success mx-4"> Signup </Link>
+                                        <Link to="/login" className="btn bg-white text-success mx-2 me-5"> Login </Link>
+                                    </div>
+                                )}
                             </ul>
                         </div>
                     </div>
                 </div>
             </nav>
         </div>
-    );
+    );    
 }

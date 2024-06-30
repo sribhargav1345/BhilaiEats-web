@@ -28,12 +28,13 @@ const LoginForm = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password }),
+            credentials: 'include',
         });
 
-        await response.json();
+        const result = await response.json();
 
-        if(!response.ok){
+        if(!result.success){
             alert("Enter Valid Credentials");
             return;
         }

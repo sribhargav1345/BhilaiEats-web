@@ -54,7 +54,11 @@ router.post("/auth/Admin" , async (req, res) => {
 
         const authToken = generateToken(newAdmin); 
 
-        res.cookie('authToken', authToken, { httpOnly: true, secure: false });
+        res.cookie('authToken', authToken, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax',
+        });
 
         return res.json({ success: true });
 
@@ -85,7 +89,11 @@ router.post("/auth/loginAdmin", async (req, res) => {
 
         const authToken = generateToken(adminData); 
 
-        res.cookie('authToken', authToken, { httpOnly: true, secure: false });
+        res.cookie('authToken', authToken, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Lax',
+        });
 
         return res.json({ success: true });                               
 
