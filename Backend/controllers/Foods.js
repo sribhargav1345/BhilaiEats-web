@@ -71,11 +71,11 @@ router.get("/categories", async(req,res) => {
 });
 
 // Deletion of Foods by Shop Owner
-router.delete("/Item/:item_id", authMiddleware, async (req, res) => {
+router.delete("/Item/:item_id", async (req, res) => {
     try {
         const { item_id } = req.params;
 
-        const deletedItem = await Item.findByIdAndDelete();
+        const deletedItem = await Item.findByIdAndDelete(item_id);
         if (!deletedItem) {
             return res.status(404).json({ error: "Food Item Not Found" });
         }

@@ -9,8 +9,10 @@ import Sidebar from '../../components/Items/SideBar/SideBar';
 import MenuItem from '../../components/Items/Menu/Menu';
 
 export default function Items() {
+
     const [foods, setFoods] = useState([]);
     const [shop, setShop] = useState({});
+
     const [categories, setCategories] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -43,10 +45,10 @@ export default function Items() {
         loadItems();
     }, [shop_id]);
 
-    // Function to handle adding a new item
+
     const addNewItem = async (newItem) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/shops/${shop_id}/items`, {
+            const response = await fetch(`http://localhost:5000/api/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -60,14 +62,13 @@ export default function Items() {
                 return;
             }
 
-            // Append the new item to the foods list
             setFoods([...foods, result.item]);
-        } catch (error) {
+        } 
+        catch (error) {
             console.error('Error adding new item:', error);
         }
     };
 
-    // Function to handle removing an item
     const handleRemoveItem = async (item_id) => {
         try {
             const response = await fetch(`http://localhost:5000/api/Item/${item_id}`, {
@@ -79,13 +80,13 @@ export default function Items() {
 
             const result = await response.json();
             if (!result.success) {
-                alert(result.message || "Something went wrong");
+                alert(result.message || "Something went wrong in Deletion");
                 return;
             }
 
-            // Update the state to remove the deleted item
             setFoods(foods.filter(item => item._id !== item_id));
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error removing item:", error);
         }
     };
