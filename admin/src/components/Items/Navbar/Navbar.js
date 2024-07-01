@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode"; 
 
 import Logo from "../../../Assests/Logo.png";
-import UserIcon from "../../../Assests/user.png";
 
 export default function Navbar() {
 

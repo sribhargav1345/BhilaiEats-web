@@ -9,7 +9,6 @@ function Routing() {
   return (
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route exact path="/:shop_id" element={<Items />} />
           <Route exact path="/login" element={<LoginAdmin />} />
           <Route exact path="/register" element={<SignUpAdmin />} />
