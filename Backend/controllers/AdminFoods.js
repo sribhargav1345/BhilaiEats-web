@@ -8,18 +8,20 @@ const Categories = require("../models/Categories");
 const { authMiddleware } = require('../middlewares/Admin');
 
 // Specifically for the admin purpose
-router.get("/shops/:shop_id", async(req,res) => {
+router.get("/shops/:shopname", async(req,res) => {
 
     try{
-        const { shop_id } = req.params;
+        const { shopname } = req.params;
 
-        const shop = await Canteen.findById(shop_id);
+        console.log(shopname);
+
+        const shop = await Canteen.findOne({ shopname });
         if(!shop){
             return res.status(400).json({ error: "Shop not found" });
         }
 
-        const items = await Items.find({ shopId: shop_id });
-        const categories = await Categories.find({ shopId: shop_id });
+        const items = await Items.find({ shop: shopname });
+        const categories = await Categories.find({ shop: shopname });
 
         return res.json({ success: true, shop, categories, items });
     }

@@ -9,7 +9,7 @@ const { handleValidationErrors } = require('../middlewares/Food');
 const { authMiddleware } = require('../middlewares/Admin');
 
 // Addition of Foods by shop owner
-router.post("/add", handleValidationErrors,  async (req, res) => {
+router.post("/add", handleValidationErrors, authMiddleware, async (req, res) => {
 
     try {
         const { shop, categoryname, name, image, price, quantity, veg } = req.body;
@@ -71,7 +71,7 @@ router.get("/categories", async(req,res) => {
 });
 
 // Deletion of Foods by Shop Owner
-router.delete("/Item/:item_id", async (req, res) => {
+router.delete("/Item/:item_id", authMiddleware ,async (req, res) => {
     try {
         const { item_id } = req.params;
 

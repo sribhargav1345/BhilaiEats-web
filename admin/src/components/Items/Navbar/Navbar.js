@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode"; 
@@ -12,6 +12,8 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 468);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -73,6 +75,8 @@ export default function Navbar() {
             if (response.ok) {
                 Cookies.remove('authToken');
                 setIsAuthenticated(false); 
+
+                navigate("/login");
             } else {
                 throw new Error('Logout failed');
             }
