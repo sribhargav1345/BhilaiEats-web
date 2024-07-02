@@ -1,8 +1,11 @@
-import React from 'react';
+import React,{ useState, useEffect } from 'react';
 import './Checkout.css';
 
 import { useSelector } from 'react-redux';
 import { loadStripe } from "@stripe/stripe-js";
+
+import Cookies from "js-cookie";
+import { jwtDecode } from 'jwt-decode';
 
 import OrderItem from '../../components/Checkout/OrderItem/OrderItem';
 import BillDetails from '../../components/Checkout/BillDetails/BillDetails';
@@ -12,14 +15,47 @@ import CardShop from '../../components/Checkout/CardShop/CardShop';
 import cartempty from "../../Assests/cartempty.png";
 import { Link } from 'react-router-dom';
 
+import io from 'socket.io-client';
+const socket = io('http://localhost:5000');
+
 export default function Checkout() {
 
     const items = useSelector(state => state.cart.cartItems);
     const shop = useSelector(state => state.cart.shop);
 
+    const [user, setUser] = useState(null);
+
     const total = items.reduce((sum, item) => sum + item.price*item.qnty, 0);
     const deliveryFee = 2.50;
     const GSTfee = 0.03 * (total);
+
+    useEffect(() => {
+        const token = Cookies.get('authToken');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setUser({
+                name: decodedToken.user.name,
+                email: decodedToken.user.email,
+                contact: decodedToken.user.contact,
+            });
+        }
+    }, []);
+
+    const placeOrder = () => {
+        const order = {
+            items,
+            shop,
+            user: {
+                name: user.name,
+                email: user.email,
+                contact: user.contact
+            },
+            status: 'pending'
+        };
+        socket.emit('place-order', order);
+
+        console.log("Your request is sent to the owner")
+    };
 
     const makePayment = async () => {
 
@@ -65,7 +101,8 @@ export default function Checkout() {
                             ))}
                         </div>
                         <BillDetails total={total} deliveryFee={deliveryFee} GSTfee={GSTfee} />
-                        <button className="checkout-btn" onClick={makePayment}>Proceed to Payment</button>
+                        <button className='checkout-btn' onClick={placeOrder}> Place Order </button>
+                        {/* <button className="checkout-btn" onClick={makePayment}>Proceed to Payment</button> */}
                     </div>
                 ) : (
                     <div className='cartisempty'>

@@ -9,7 +9,7 @@ const jwtSecret = process.env.JWT_SECRET_USER || 'default_one';
 const jwtExpiration = '1h';
 
 const generateToken = (user) => {
-    const tokenPayload = { user: { type: 'User', contact: user.contact, email: user.email } };
+    const tokenPayload = { user: { type: 'User', name: user.name, contact: user.contact, email: user.email } };
     return jwt.sign(tokenPayload, jwtSecret, { expiresIn: jwtExpiration });
 };
 
