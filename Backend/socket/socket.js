@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const Order = require('../models/Orders');
 
 let io;
 
@@ -12,28 +13,44 @@ const setupSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`);
+    console.log('a user connected:', socket.id);
 
-    // Join rooms based on user type (user or admin)
-    socket.on('joinRoom', (room) => {
-      socket.join(room);
-      console.log(`Socket ${socket.id} joined room ${room}`);
+    socket.on('place-order', async (order) => {
+      try {
+        const newOrder = new Order(order);
+        await newOrder.save();
+        io.emit('order-received', order); 
+      } 
+      catch (error) {
+        console.error('Error placing order:', error);
+        socket.emit('order-error', { message: 'Failed to place order.' });
+      }
     });
 
-    // Listen for new orders from users
-    socket.on('newOrder', (order) => {
-      console.log('New order received:', order);
-      io.to('admin').emit('orderReceived', order); // Notify admin
+    socket.on('accept-order', async (orderId) => {
+      try {
+        await Order.updateOne({ _id: orderId }, { status: 'accepted' });
+        io.emit('order-accepted', orderId); 
+      } 
+      catch (error) {
+        console.error('Error accepting order:', error);
+        socket.emit('order-error', { message: 'Failed to accept order.' });
+      }
     });
 
-    // Listen for order status updates from admin
-    socket.on('updateOrderStatus', (data) => {
-      console.log('Order status update:', data);
-      io.to(data.userId).emit('orderStatusUpdated', data); // Notify user
+    socket.on('reject-order', async (orderId) => {
+      try {
+        await Order.updateOne({ _id: orderId }, { status: 'rejected' });
+        io.emit('order-rejected', orderId);
+      } 
+      catch (error) {
+        console.error('Error rejecting order:', error);
+        socket.emit('order-error', { message: 'Failed to reject order.' });
+      }
     });
 
     socket.on('disconnect', () => {
-      console.log(`User disconnected: ${socket.id}`);
+      console.log('user disconnected:', socket.id);
     });
   });
 };

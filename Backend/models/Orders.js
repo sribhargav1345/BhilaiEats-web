@@ -9,11 +9,23 @@ const OrderSchema = new Schema({
         type: Object
     },
     user: {
-        name: String,
-        email: String,
-        contact: String,
+        name: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: true
+        },
+        contact:{
+            type: String,
+            required: true
+        } 
     },
-    status: String
+    status: {
+        type: String,
+        default: 'pending'
+    }   
 }, { collection: 'orders' });
 
 module.exports = mongoose.model('Order', OrderSchema);
