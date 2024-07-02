@@ -1,0 +1,20 @@
+.orders-page{
+    display: flex;
+}
+
+.order-requests{
+    width: 50%;
+}
+
+.order-requests h4{
+    margin: 8vh 0 0 8vw;
+}
+
+#line{
+    margin-left: 8vw;
+    margin-right: 6vw;
+}
+
+.requests-accepted{
+    width: 50%;
+}

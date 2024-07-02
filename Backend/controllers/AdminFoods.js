@@ -13,8 +13,6 @@ router.get("/shops/:shopname", async(req,res) => {
     try{
         const { shopname } = req.params;
 
-        console.log(shopname);
-
         const shop = await Canteen.findOne({ shopname });
         if(!shop){
             return res.status(400).json({ error: "Shop not found" });
