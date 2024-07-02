@@ -13,13 +13,30 @@ const setupSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log('a user connected:', socket.id);
+    console.log('A user connected:', socket.id);
 
+    // Room for specific User
+    socket.on('join-user', (username) => {
+      socket.join(`user-${username}`);
+      console.log(`User joined room: user-${username}`);
+    });
+
+    // Shop for specific Admin
+    socket.on('join-shop', (shopName) => {
+      socket.join(`shop-${shopName}`);
+      console.log(`User joined room: shop-${shopName}`);
+    });
+
+    // Handle placing an order
     socket.on('place-order', async (order) => {
       try {
         const newOrder = new Order(order);
         await newOrder.save();
-        io.emit('order-received', order); 
+        console.log("Order placed:", newOrder);
+
+        io.to(`shop-${order.shop}`).emit('order-received', newOrder);
+        io.to(`user-${order.user.name}`).emit('order-status', { status: 'pending', order: newOrder });
+
       } 
       catch (error) {
         console.error('Error placing order:', error);
@@ -27,10 +44,18 @@ const setupSocket = (server) => {
       }
     });
 
+    // Handle accepting an order
     socket.on('accept-order', async (orderId) => {
       try {
-        await Order.updateOne({ _id: orderId }, { status: 'accepted' });
-        io.emit('order-accepted', orderId); 
+        const order = await Order.findById(orderId);
+        if (!order) {
+          throw new Error('Order not found');
+        }
+        order.status = 'accepted';
+        await order.save();
+
+        io.to(`shop-${order.shop}`).emit('order-accepted', order);
+        io.to(`user-${order.user.id}`).emit('order-status', { status: 'accepted', order: order });
       } 
       catch (error) {
         console.error('Error accepting order:', error);
@@ -38,10 +63,18 @@ const setupSocket = (server) => {
       }
     });
 
+    // Handle rejecting an order
     socket.on('reject-order', async (orderId) => {
       try {
-        await Order.updateOne({ _id: orderId }, { status: 'rejected' });
-        io.emit('order-rejected', orderId);
+        const order = await Order.findById(orderId);
+        if (!order) {
+          throw new Error('Order not found');
+        }
+        order.status = 'rejected';
+        await order.save();
+
+        io.to(`shop-${order.shop}`).emit('order-rejected', order);
+        io.to(`user-${order.user.name}`).emit('order-status', { status: 'rejected', order: order });
       } 
       catch (error) {
         console.error('Error rejecting order:', error);
@@ -50,7 +83,7 @@ const setupSocket = (server) => {
     });
 
     socket.on('disconnect', () => {
-      console.log('user disconnected:', socket.id);
+      console.log('User disconnected:', socket.id);
     });
   });
 };
