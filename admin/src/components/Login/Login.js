@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import Cookies from "js-cookie";
+
 import './Login.css';
 
 import logo from "../../Assests/Logo.png";
@@ -23,7 +25,7 @@ const LoginForm = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/api/auth/loginAdmin", {
+        const response = await fetch("http://localhost:5000/api/auth/loginAdmin", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -38,6 +40,8 @@ const LoginForm = () => {
             alert("Enter Valid Credentials");
             return;
         }
+
+        Cookies.set('authToken', result.authToken, { expires: 1, sameSite: 'Lax' });
 
         navigate("/");
     };

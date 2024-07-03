@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import GoogleLoginButton from "./GoogleLogin";
+import Cookies from "js-cookie";
 
 import './Login.css';
 
@@ -25,7 +26,7 @@ const LoginForm = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/api/auth/login", {
+        const response = await fetch("http://localhost:5000/api/auth/login", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -34,12 +35,16 @@ const LoginForm = () => {
             credentials: 'include',
         });
 
-        await response.json();
+        const result = await response.json();
 
         if(!response.ok){
             alert("Enter Valid Credentials");
             return;
         }
+
+        const authToken = result.authToken;
+
+        Cookies.set('authToken', authToken, { expires: 1, sameSite: 'Lax' });
 
         navigate("/");
     };
@@ -87,7 +92,6 @@ const LoginForm = () => {
                         </div>
 
                         <button type="submit" className="submit-btn mb-3"> Submit </button>
-                        <p className='login-textp'>Are you a ShopOwner? <a href="/login-Admin">Login here</a></p>
                     </form>
                 </div>
             </div>

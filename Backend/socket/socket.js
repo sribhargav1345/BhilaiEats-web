@@ -14,18 +14,16 @@ const setupSocket = (server) => {
 
   io.on('connection', (socket) => {
 
-      console.log('A user connected:', socket.id);
-
       // Room for specific User
       socket.on('join-user', (contact) => {
         socket.join(`user-${contact}`);
-        console.log(`User joined room: user-${contact}`);
+        // console.log(`User joined room: user-${contact}`);
       });
 
       // Room for specific Admin
       socket.on('join-shop', (shopName) => {
         socket.join(`shop-${shopName}`);
-        console.log(`Admin joined room: shop-${shopName}`);
+        // console.log(`Admin joined room: shop-${shopName}`);
       });
 
       // Handle placing an order
@@ -33,7 +31,6 @@ const setupSocket = (server) => {
         try {
           const newOrder = new Order(order);
           await newOrder.save();
-          console.log("Order placed");
 
           io.to(`shop-${order.shop.shopname}`).emit('order-received', newOrder);
           io.to(`user-${order.user.contact}`).emit('order-status', { status: 'pending', order: newOrder });

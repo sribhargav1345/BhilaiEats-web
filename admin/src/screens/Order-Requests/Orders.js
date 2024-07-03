@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import Cookies from "js-cookie";
 
-import { jwtDecode } from 'jwt-decode';
+import { getUserFromToken } from '../../utils';
+
 import "./Orders.css";
 
 import Navbar from '../../components/OrderRequests/Navbar/Navbar';
 import Ordering from '../../components/OrderRequests/Orders/Orders';
 
-const SOCKET_URL = 'https://bhilaieats-web.onrender.com';
+const SOCKET_URL = 'http://localhost:5000';
 const socket = io(SOCKET_URL, {
   transports: ['websocket'],
   secure: true
@@ -18,10 +18,9 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const token = Cookies.get('authToken');
+    const token = getUserFromToken();
     if (token) {
-      const decodedToken = jwtDecode(token);
-      const shopName = decodedToken.user.shopname;
+      const shopName = token.shopname;
 
       socket.emit('join-shop', shopName);
 

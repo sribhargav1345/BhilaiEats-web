@@ -54,13 +54,7 @@ router.post("/auth/Admin" , async (req, res) => {
 
         const authToken = generateToken(newAdmin); 
 
-        res.cookie('authToken', authToken, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Lax',
-        });
-
-        return res.json({ success: true });
+        return res.json({ success: true, authToken: authToken });
 
     } 
     catch (error) {
@@ -87,15 +81,9 @@ router.post("/auth/loginAdmin", async (req, res) => {
             return res.status(400).json({ errors: "Incorrect email or password" });                 
         }
 
-        const authToken = generateToken(adminData); 
+        const authToken = generateToken(adminData);
 
-        res.cookie('authToken', authToken, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Lax',
-        });
-
-        return res.json({ success: true });                               
+        return res.json({ success: true, authToken: authToken });                               
 
     } 
     catch (error) {

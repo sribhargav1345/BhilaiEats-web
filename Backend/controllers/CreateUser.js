@@ -39,13 +39,7 @@ router.post("/auth/register", validationRules, handleValidationErrors, async(req
 
         const authToken = generateToken(newUser);
 
-        res.cookie('authToken', authToken, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Lax',
-        });
-
-        return res.json({ success: true });
+        return res.json({ success: true, authToken: authToken });
     } catch (err) {
         console.error('Error during registration:', err);
         res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -69,13 +63,8 @@ router.post("/auth/login", async (req, res) => {
 
         const authToken = generateToken(Userdata);
 
-        res.cookie('authToken', authToken, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Lax',
-        });
-
-        return res.json({ success: true });
+        return res.json({ success: true, authToken: authToken });
+        
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ success: false, error: "Internal Server Error" });

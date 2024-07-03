@@ -1,3 +1,39 @@
 .first-heading{
     margin-top: 40px;
 }
+.shop-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-wrapper {
+    overflow: hidden;
+    width: 90%;
+    max-width: 100%;
+}
+
+.shop-slider {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.shop-card-wrapper {
+    flex: 1 0 33.3333%; /* Show 3 items per view */
+    max-width: 33.3333%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.carousel-button {
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.carousel-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

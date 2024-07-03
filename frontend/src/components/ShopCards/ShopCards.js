@@ -27,7 +27,7 @@ export default function ShopCards(props) {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div data-testid='card-test' className="card mt-3 card-shop"
+            <div className="card mt-3 card-shop"
                 style={{
                     boxShadow: isHovered ? '0px 4px 8px rgba(0, 0, 0, 0.2)' : 'none',
                     transform: isHovered ? 'scale(1.03)' : 'scale(1)',

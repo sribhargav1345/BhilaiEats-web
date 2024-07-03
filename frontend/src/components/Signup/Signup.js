@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+import Cookies from "js-cookie";
+
 import './Signup.css';
 
 import book_icon from "../../Assests/Logo.png";
@@ -33,7 +35,7 @@ const SignUpForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/api/auth/register", {
+        const response = await fetch("http://localhost:5000/ter", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -47,6 +49,8 @@ const SignUpForm = () => {
             alert(result.message || "Failed to create user");
             return;
         }
+
+        Cookies.set('authToken', result.authToken, { expires: 1, sameSite: 'Lax' });
 
         alert("User Created Successfully");
         console.log(result);
@@ -116,7 +120,6 @@ const SignUpForm = () => {
                         </div>
 
                         <button type="submit" className="submit-btn mb-3"> Submit </button>
-                        <p className='signup-textp'>Are you a ShopOwner? <a href="/register-Admin">SignUp here</a></p>
                     </form>
                     
                 </div>

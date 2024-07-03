@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Menu.css";
 
 // Belong to Add To Cart
 import { useDispatch } from "react-redux";
 import { addToCart } from '../../../redux/CartSlice';
 
+import { getUserFromToken } from '../../../utils';
+
 import unavailable from "../../../Assests/Unavailable.png";
 import vegIcon from "../../../Assests/veg-icon.png";
 import nonvegIcon from "../../../Assests/non-veg-icon.png";
 
-const MenuItem = ({ item,shop }) => {
+const MenuItem = ({ item, shop }) => {
+  const dispatch = useDispatch();
+  const [user_contact, setUserContact] = useState("");
 
-  const dispatch = useDispatch();     // This will store items in store file in redux.
-  
+  useEffect(() => {
+    const token = getUserFromToken();
+    setUserContact(token.contact);
+  }, []);
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ item, shop, user_contact }));
+  };
+
   return (
     <div>
       <div className="menu-item m-3">
@@ -33,12 +44,13 @@ const MenuItem = ({ item,shop }) => {
             {item.quantity !== undefined ? (<span className='ms-2'> for {item.quantity} </span>) : (null)}
           </div>
           <p>{item.description}</p>
-          <button className='btn btn-md btn-warning' onClick={() => dispatch(addToCart({ item,shop }))}>Add</button>
+          <button className='btn btn-md btn-warning' onClick={handleAddToCart}>Add</button>
         </div>
       </div>
       <hr className='horizontal-line'/>
     </div>
   );
 };
+
 
 export default MenuItem;
