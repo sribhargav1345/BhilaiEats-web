@@ -90,10 +90,7 @@ router.post("/auth/loginAdmin", async (req, res) => {
         const authToken = generateToken(adminData); 
 
         res.cookie('authToken', authToken, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
             sameSite: 'Lax',
-            domain: process.env.VERCEL_DOMAIN || '.bhilaieats-web-admin.vercel.app'
         });
 
         return res.json({ success: true });                               
