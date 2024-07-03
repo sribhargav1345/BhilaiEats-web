@@ -30,6 +30,7 @@ export default function Items() {
         const loadItems = async () => {
             try {
                 const token = Cookies.get('authToken');
+                console.log(token);
                 if (!token) {
                     setAuthorized(false);
                     navigate('/login'); 
@@ -37,6 +38,7 @@ export default function Items() {
                 }
 
                 const decoded = jwtDecode(token);
+                console.log(decoded);
                 const shopname = decoded.user.shopname;
 
                 if (!shopname) {
