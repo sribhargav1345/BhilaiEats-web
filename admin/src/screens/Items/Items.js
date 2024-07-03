@@ -47,7 +47,7 @@ export default function Items() {
 
                 setAuthorized(true);
 
-                const response = await fetch(`http://localhost:5000/api/shops/${shopname}`, {
+                const response = await fetch(`https://bhilaieats-web.onrender.com/api/shops/${shopname}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -76,7 +76,7 @@ export default function Items() {
 
     const addNewItem = async (newItem) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/add`, {
+            const response = await fetch(`https://bhilaieats-web.onrender.com/api/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -99,7 +99,7 @@ export default function Items() {
 
     const handleRemoveItem = async (item_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/Item/${item_id}`, {
+            const response = await fetch(`https://bhilaieats-web.onrender.com/api/Item/${item_id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"

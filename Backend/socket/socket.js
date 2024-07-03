@@ -13,36 +13,37 @@ const setupSocket = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log('A user connected:', socket.id);
 
-    // Room for specific User
-    socket.on('join-user', (username) => {
-      socket.join(`user-${username}`);
-      console.log(`User joined room: user-${username}`);
-    });
+      console.log('A user connected:', socket.id);
 
-    // Shop for specific Admin
-    socket.on('join-shop', (shopName) => {
-      socket.join(`shop-${shopName}`);
-      console.log(`User joined room: shop-${shopName}`);
-    });
+      // Room for specific User
+      socket.on('join-user', (contact) => {
+        socket.join(`user-${contact}`);
+        console.log(`User joined room: user-${contact}`);
+      });
 
-    // Handle placing an order
-    socket.on('place-order', async (order) => {
-      try {
-        const newOrder = new Order(order);
-        await newOrder.save();
-        console.log("Order placed:", newOrder);
+      // Room for specific Admin
+      socket.on('join-shop', (shopName) => {
+        socket.join(`shop-${shopName}`);
+        console.log(`Admin joined room: shop-${shopName}`);
+      });
 
-        io.to(`shop-${order.shop}`).emit('order-received', newOrder);
-        io.to(`user-${order.user.name}`).emit('order-status', { status: 'pending', order: newOrder });
+      // Handle placing an order
+      socket.on('place-order', async (order) => {
+        try {
+          const newOrder = new Order(order);
+          await newOrder.save();
+          console.log("Order placed");
 
-      } 
-      catch (error) {
-        console.error('Error placing order:', error);
-        socket.emit('order-error', { message: 'Failed to place order.' });
-      }
-    });
+          io.to(`shop-${order.shop.shopname}`).emit('order-received', newOrder);
+          io.to(`user-${order.user.contact}`).emit('order-status', { status: 'pending', order: newOrder });
+
+        } 
+        catch (error) {
+          console.error('Error placing order:', error);
+          socket.emit('order-error', { message: 'Failed to place order.' });
+        }
+      });
 
     // Handle accepting an order
     socket.on('accept-order', async (orderId) => {
@@ -54,8 +55,8 @@ const setupSocket = (server) => {
         order.status = 'accepted';
         await order.save();
 
-        io.to(`shop-${order.shop}`).emit('order-accepted', order);
-        io.to(`user-${order.user.id}`).emit('order-status', { status: 'accepted', order: order });
+        io.to(`shop-${order.shop.shopname}`).emit('order-accepted', order);
+        io.to(`user-${order.user.contact}`).emit('order-status', { status: 'accepted', order: order });
       } 
       catch (error) {
         console.error('Error accepting order:', error);
@@ -74,7 +75,7 @@ const setupSocket = (server) => {
         await order.save();
 
         io.to(`shop-${order.shop}`).emit('order-rejected', order);
-        io.to(`user-${order.user.name}`).emit('order-status', { status: 'rejected', order: order });
+        io.to(`user-${order.user.contact}`).emit('order-status', { status: 'rejected', order: order });
       } 
       catch (error) {
         console.error('Error rejecting order:', error);

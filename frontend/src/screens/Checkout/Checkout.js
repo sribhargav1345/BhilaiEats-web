@@ -16,7 +16,7 @@ import cartempty from "../../Assests/cartempty.png";
 import { Link } from 'react-router-dom';
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:5000');
+const socket = io('https://bhilaieats-web.onrender.com');
 
 export default function Checkout() {
 
@@ -33,11 +33,14 @@ export default function Checkout() {
         const token = Cookies.get('authToken');
         if (token) {
             const decodedToken = jwtDecode(token);
+            console.log(decodedToken);
             setUser({
                 name: decodedToken.user.name,
                 email: decodedToken.user.email,
                 contact: decodedToken.user.contact,
             });
+
+            socket.emit('join-user', decodedToken.user.contact);
         }
     }, []);
 
@@ -66,7 +69,7 @@ export default function Checkout() {
             products: items
         };
 
-        const response = await fetch(`http://localhost:5000/create-checkout-session`, {
+        const response = await fetch(`https://bhilaieats-web.onrender.com/create-checkout-session`, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json"
