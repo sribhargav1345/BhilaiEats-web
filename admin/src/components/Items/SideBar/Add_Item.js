@@ -1,23 +1,44 @@
 import React, { useState } from 'react';
 import './Add_item.css';
+import { getUserFromToken } from '../../../utils';
 
 const Modal = ({ showModal, closeModal, addNewItem }) => {
 
+    const token = getUserFromToken();
+
     const [categoryname, setCategoryname] = useState('');
+
     const [veg, setVeg] = useState(false);
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (categoryname && name && image && price) {
-            addNewItem({ categoryname, veg, name, image, quantity, price });
-            closeModal();
-        } else {
-            alert("Please fill all required fields.");
+    const handleSubmit = async() => {
+
+        const response = await fetch("https://bhilaieats-web.onrender.com/api/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                shopname: token.shopname,
+                categoryname: categoryname,
+                name: name,
+                image: image,
+                quantity: quantity,
+                price: price,
+                veg: veg
+            })
+        });  
+
+        const result = response.json();
+
+        if(!result.success){
+            alert("Failed to Add Item");
         }
+
+        closeModal();
     };
 
     return (
@@ -26,7 +47,7 @@ const Modal = ({ showModal, closeModal, addNewItem }) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Add New Food Item</h5>
-                        <button type="button" className="close" onClick={closeModal} aria-label="Close">
+                        <button type="button" className="btn btn-md close" onClick={closeModal} aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -38,7 +59,16 @@ const Modal = ({ showModal, closeModal, addNewItem }) => {
                             </div>
                             <div className="form-group">
                                 <label>Vegetarian:</label>
-                                <input type="checkbox" className="form-check-input" checked={veg} onChange={(e) => setVeg(e.target.checked)} />
+                                <div className='boxes'>
+                                    <div className="form-check mx-5">
+                                        <input type="checkbox" className="form-check-input" id="vegYes" name="veg" value="yes" checked={veg === 'yes'} onChange={(e) => setVeg(e.target.value)} />
+                                        <label className="form-check-label" htmlFor="vegYes">Yes</label>
+                                    </div>
+                                    <div className="form-check me-5">
+                                        <input type="checkbox" className="form-check-input" id="vegNo" name="veg" value="no" checked={veg === 'no'} onChange={(e) => setVeg(e.target.value)} />
+                                        <label className="form-check-label" htmlFor="vegNo">No</label>
+                                    </div>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label>Name:</label>
@@ -48,13 +78,15 @@ const Modal = ({ showModal, closeModal, addNewItem }) => {
                                 <label>Image URL:</label>
                                 <input type="text" className="form-control" value={image} onChange={(e) => setImage(e.target.value)} required />
                             </div>
-                            <div className="form-group">
-                                <label>Quantity:</label>
-                                <input type="text" className="form-control" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-                            </div>
-                            <div className="form-group">
-                                <label>Price:</label>
-                                <input type="number" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                            <div className='d-flex'>
+                                <div className="form-group me-4">
+                                    <label>Price:</label>
+                                    <input type="number" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                                </div>
+                                <div className="form-group">
+                                    <label>Quantity:</label>
+                                    <input type="text" className="form-control" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+                                </div>
                             </div>
                             <button type="submit" className="btn btn-primary">Add Item</button>
                         </form>

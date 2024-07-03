@@ -8,7 +8,7 @@ import "./Orders.css";
 import Navbar from '../../components/OrderRequests/Navbar/Navbar';
 import Ordering from '../../components/OrderRequests/Orders/Orders';
 
-const SOCKET_URL = 'http://localhost:5000';
+const SOCKET_URL = 'https://bhilaieats-web.onrender.com';
 const socket = io(SOCKET_URL, {
   transports: ['websocket'],
   secure: true

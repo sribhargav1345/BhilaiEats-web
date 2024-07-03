@@ -9,15 +9,21 @@
   }
   
   .modal-header {
-    background-color: #007bff;
+    background-color: #5c5e61;
     color: white;
     border-bottom: none;
+    display: flex;
+    justify-content: space-between;
   }
   
   .modal-header .close {
     color: white;
   }
   
+  .boxes{
+    display: flex;
+  }
+
   .modal-title {
     font-weight: bold;
   }
