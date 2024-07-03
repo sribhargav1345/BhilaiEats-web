@@ -93,6 +93,7 @@ router.post("/auth/loginAdmin", async (req, res) => {
             httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Lax',
+            domain: process.env.VERCEL_DOMAIN || 'https://bhilaieats-web-admin.vercel.app'
         });
 
         return res.json({ success: true });                               
