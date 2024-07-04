@@ -11,6 +11,7 @@ import CardShop from '../../components/Items/CardShop/CardShop';
 import Sidebar from '../../components/Items/SideBar/SideBar';
 import MenuItem from '../../components/Items/Menu/Menu';
 import { useNavigate } from 'react-router-dom';
+import { TokenOnly } from '../../utils';
 
 export default function Items() {
 
@@ -24,6 +25,7 @@ export default function Items() {
     const [authorized, setAuthorized] = useState(false);
 
     const navigate = useNavigate();
+    let token = TokenOnly();
 
     useEffect(() => {
 
@@ -56,7 +58,6 @@ export default function Items() {
                 });
 
                 const result = await response.json();
-                console.log(result);
 
                 if (!result.success) {
                     alert(result.message || "Error in Getting Items");
@@ -73,37 +74,16 @@ export default function Items() {
         };
 
         loadItems();
-    }, [navigate]); 
+    }, [navigate, foods]); 
 
-    const addNewItem = async (newItem) => {
-        try {
-            const response = await fetch(`https://bhilaieats-web.onrender.com/api/add`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newItem)
-            });
-
-            const result = await response.json();
-            if (!result.success) {
-                alert(result.message || "Error in Adding Item");
-                return;
-            }
-
-            setFoods([...foods, result.item]);
-        }
-        catch (error) {
-            console.error('Error adding new item:', error);
-        }
-    };
 
     const handleRemoveItem = async (item_id) => {
         try {
             const response = await fetch(`https://bhilaieats-web.onrender.com/api/Item/${item_id}`, {
                 method: "DELETE",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 }
             });
 
@@ -143,7 +123,6 @@ export default function Items() {
                                 categories={categories} 
                                 setSearchQuery={setSearchQuery} 
                                 setSelectedCategory={setSelectedCategory} 
-                                addNewItem={addNewItem}  
                             />
                         </div>
                         <hr className='separation' />
