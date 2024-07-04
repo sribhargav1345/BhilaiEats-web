@@ -5,7 +5,8 @@ const { body, validationResult } = require("express-validator");
 const jwtSecret = process.env.JWT_SECRET_USER || 'default';
 
 const authMiddleware = async (req, res, next) => {
-    const token = req.cookies.authToken;
+
+    const token = req.header('Authorization').split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ error: 'Authorization denied' });

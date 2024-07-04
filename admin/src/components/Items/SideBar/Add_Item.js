@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './Add_item.css';
-import { getUserFromToken } from '../../../utils';
+import { getUserFromToken, TokenOnly } from '../../../utils';
 
 const Modal = ({ showModal, closeModal, addNewItem }) => {
 
-    const token = getUserFromToken();
+    const decoded = getUserFromToken();
+    const token = TokenOnly();
 
     const [categoryname, setCategoryname] = useState('');
 
@@ -16,13 +17,16 @@ const Modal = ({ showModal, closeModal, addNewItem }) => {
 
     const handleSubmit = async() => {
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/api/add", {
+        console.log(token);
+
+        const response = await fetch("https://bhilaieats-web.onrender.com//api/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
-                shopname: token.shopname,
+                shopname: decoded.shopname,
                 categoryname: categoryname,
                 name: name,
                 image: image,

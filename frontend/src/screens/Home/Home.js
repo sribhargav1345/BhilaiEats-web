@@ -13,7 +13,7 @@ export default function Home() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await fetch('https://bhilaieats-web.onrender.com/api/shops', {
+                const response = await fetch('https://bhilaieats-web.onrender.com//api/shops', {
                     method: "GET",
                     headers: {
                         'Content-Type': "application/json",

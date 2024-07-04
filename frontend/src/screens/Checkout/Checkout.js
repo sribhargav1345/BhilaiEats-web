@@ -16,7 +16,7 @@ import cartempty from "../../Assests/cartempty.png";
 import { Link } from 'react-router-dom';
 
 import io from 'socket.io-client';
-const socket = io('https://bhilaieats-web.onrender.com');
+const socket = io('https://bhilaieats-web.onrender.com/');
 
 export default function Checkout() {
 
@@ -69,7 +69,7 @@ export default function Checkout() {
             products: items
         };
 
-        const response = await fetch(`https://bhilaieats-web.onrender.com/create-checkout-session`, {
+        const response = await fetch(`https://bhilaieats-web.onrender.com//create-checkout-session`, {
             method: "POST",
             headers: {
                 'Content-Type': "application/json"

@@ -35,7 +35,7 @@ const SignUpForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/ter", {
+        const response = await fetch("https://bhilaieats-web.onrender.com//ter", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
