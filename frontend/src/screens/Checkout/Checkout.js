@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Checkout.css';
 
 import { useSelector } from 'react-redux';
@@ -11,11 +11,13 @@ import OrderItem from '../../components/Checkout/OrderItem/OrderItem';
 import BillDetails from '../../components/Checkout/BillDetails/BillDetails';
 import Navbar from '../../components/Checkout/Navbar/Navbar';
 import CardShop from '../../components/Checkout/CardShop/CardShop';
-
 import cartempty from "../../Assests/cartempty.png";
-import { Link } from 'react-router-dom';
 
+import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 const socket = io('https://bhilaieats-web.onrender.com');
 
 export default function Checkout() {
@@ -25,7 +27,7 @@ export default function Checkout() {
 
     const [user, setUser] = useState(null);
 
-    const total = items.reduce((sum, item) => sum + item.price*item.qnty, 0);
+    const total = items.reduce((sum, item) => sum + item.price * item.qnty, 0);
     const deliveryFee = 2.50;
     const GSTfee = 0.03 * (total);
 
@@ -60,8 +62,24 @@ export default function Checkout() {
         console.log("Your request is sent to the owner")
     };
 
-    const makePayment = async () => {
+    const handlePlaceOrder = () => {
+        confirmAlert({
+            title: 'Confirm to place order',
+            message: `Are you sure you want to place an order of ₹${total+deliveryFee+GSTfee}?`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => placeOrder()
+                },
+                {
+                    label: 'No',
+                    onClick: () => console.log('Order not placed')
+                }
+            ]
+        });
+    };
 
+    const makePayment = async () => {
         console.log(process.env.REACT_APP_STRIPE_KEY);
         const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
@@ -88,7 +106,6 @@ export default function Checkout() {
         }
     }
 
-
     return (
         <div className='total-checkout'>
             <div className="navbar-container">
@@ -104,7 +121,7 @@ export default function Checkout() {
                             ))}
                         </div>
                         <BillDetails total={total} deliveryFee={deliveryFee} GSTfee={GSTfee} />
-                        <button className='checkout-btn' onClick={placeOrder}> Place Order </button>
+                        <button className='checkout-btn' onClick={handlePlaceOrder}> Place Order </button>
                         {/* <button className="checkout-btn" onClick={makePayment}>Proceed to Payment</button> */}
                     </div>
                 ) : (

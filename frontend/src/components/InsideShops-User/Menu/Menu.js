@@ -1,33 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import "./Menu.css";
-
-// Belong to Add To Cart
 import { useDispatch } from "react-redux";
 import { addToCart } from '../../../redux/CartSlice';
-
 import { getUserFromToken } from '../../../utils';
-
 import unavailable from "../../../Assests/Unavailable.png";
 import vegIcon from "../../../Assests/veg-icon.png";
 import nonvegIcon from "../../../Assests/non-veg-icon.png";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MenuItem = ({ item, shop }) => {
-
   const dispatch = useDispatch();
-  const [user_contact, setUserContact] = useState("");
+  const [userContact, setUserContact] = useState("");
 
   useEffect(() => {
     const decoded = getUserFromToken();
     if (decoded && decoded.contact) {
       setUserContact(decoded.contact);
-    }
-    else {
+    } else {
       console.error('Failed to retrieve user contact from token');
     }
   }, []);
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ item, shop, user_contact }));
+    const decoded = getUserFromToken();
+    if (!decoded || !decoded.contact) {
+      toast.error("Please login as a customer to add items to the cart", {
+        position: "top-right",
+        autoClose: 3200,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      dispatch(addToCart({ item, shop, user_contact: decoded.contact }));
+    }
   };
 
   return (
@@ -53,10 +62,10 @@ const MenuItem = ({ item, shop }) => {
           <button className='btn btn-md btn-warning' onClick={handleAddToCart}>Add</button>
         </div>
       </div>
-      <hr className='horizontal-line'/>
+      <hr className='horizontal-line' />
+      <ToastContainer />
     </div>
   );
 };
-
 
 export default MenuItem;
