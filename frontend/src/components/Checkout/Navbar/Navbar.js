@@ -71,7 +71,7 @@ export default function Navbar() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("https://bhilaieats-web.onrender.com//api/auth/logout", {
+            const response = await fetch("https://bhilaieats-web.onrender.com/api/auth/logout", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

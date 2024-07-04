@@ -19,7 +19,7 @@ const Modal = ({ showModal, closeModal, addNewItem }) => {
 
         console.log(token);
 
-        const response = await fetch("https://bhilaieats-web.onrender.com//api/add", {
+        const response = await fetch("https://bhilaieats-web.onrender.com/api/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
