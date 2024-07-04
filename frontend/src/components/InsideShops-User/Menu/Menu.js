@@ -12,12 +12,18 @@ import vegIcon from "../../../Assests/veg-icon.png";
 import nonvegIcon from "../../../Assests/non-veg-icon.png";
 
 const MenuItem = ({ item, shop }) => {
+
   const dispatch = useDispatch();
   const [user_contact, setUserContact] = useState("");
 
   useEffect(() => {
-    const token = getUserFromToken();
-    setUserContact(token.contact);
+    const decoded = getUserFromToken();
+    if (decoded && decoded.contact) {
+      setUserContact(decoded.contact);
+    }
+    else {
+      console.error('Failed to retrieve user contact from token');
+    }
   }, []);
 
   const handleAddToCart = () => {

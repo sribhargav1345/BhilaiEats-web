@@ -32,7 +32,7 @@ const cartSlice = createSlice({
             if (state.user_contact && state.user_contact !== user_contact) {
                 throw new Error('Cart does not belong to the logged-in user.');
             }
-
+            
             if (state.cartItems.length === 0 || state.shop.shopname === item.shop) {
                 const existingItemIndex = state.cartItems.findIndex(cartItem => cartItem._id === item._id);
 
