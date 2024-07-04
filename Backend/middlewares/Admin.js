@@ -9,7 +9,6 @@ const jwtSecret = process.env.JWT_SECRET_ADMIN || 'default';
 const authMiddleware = async(req,res,next) => {
     
     const token = req.header('Authorization').split(' ')[1];
-    console.log(token);
 
     if (!token) {
         console.log("Token not present");

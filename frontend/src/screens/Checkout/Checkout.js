@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Checkout.css';
 
 import { useSelector } from 'react-redux';
-import { loadStripe } from "@stripe/stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
@@ -79,32 +79,32 @@ export default function Checkout() {
         });
     };
 
-    const makePayment = async () => {
-        console.log(process.env.REACT_APP_STRIPE_KEY);
-        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
+    // const makePayment = async () => {
+    //     console.log(process.env.REACT_APP_STRIPE_KEY);
+    //     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
-        const body = {
-            products: items
-        };
+    //     const body = {
+    //         products: items
+    //     };
 
-        const response = await fetch(`https://bhilaieats-web.onrender.com/create-checkout-session`, {
-            method: "POST",
-            headers: {
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify(body)
-        });
+    //     const response = await fetch(`https://bhilaieats-web.onrender.com/create-checkout-session`, {
+    //         method: "POST",
+    //         headers: {
+    //             'Content-Type': "application/json"
+    //         },
+    //         body: JSON.stringify(body)
+    //     });
 
-        const session = await response.json();
+    //     const session = await response.json();
 
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id
-        });
+    //     const result = await stripe.redirectToCheckout({
+    //         sessionId: session.id
+    //     });
 
-        if (result.error) {
-            console.error(result.error.message);
-        }
-    }
+    //     if (result.error) {
+    //         console.error(result.error.message);
+    //     }
+    // }
 
     return (
         <div className='total-checkout'>

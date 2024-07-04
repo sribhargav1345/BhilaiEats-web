@@ -70,6 +70,55 @@ router.get("/categories", async(req,res) => {
     }
 });
 
+// Edit Foods by Shop Owner 
+router.put("/edit/:item_id", authMiddleware, async (req, res) => {
+    try {
+        const { item_id } = req.params;
+        const { shop, categoryname, name, image, price, quantity, veg } = req.body;
+
+        // Check if the item exists
+        const existingItem = await Item.findById(item_id);
+        if (!existingItem) {
+            return res.status(404).json({ success: false, error: "Food Item Not Found" });
+        }
+
+        const canteen = await Canteen.findOne({ shopname: shop });
+        if (!canteen) {
+            return res.status(404).json({ success: false, error: "Shop not found" });
+        }
+
+        const shopId = canteen._id;
+
+        const existingCategory = await Category.findOne({ shopId, categoryname });
+        if (!existingCategory) {
+            const newCategory = new Category({
+                shopId,
+                shop,
+                categoryname,
+                image
+            });
+
+            await newCategory.save();
+        }
+
+        existingItem.shopId = shopId;
+        existingItem.shop = shop;
+        existingItem.categoryname = categoryname;
+        existingItem.name = name;
+        existingItem.image = image;
+        existingItem.price = price;
+        existingItem.quantity = quantity;
+        existingItem.veg = veg;
+
+        await existingItem.save();
+
+        res.json({ success: true, data: existingItem });
+    } catch (error) {
+        console.error('Error updating food item:', error);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
 // Deletion of Foods by Shop Owner
 router.delete("/Item/:item_id", authMiddleware ,async (req, res) => {
     try {
