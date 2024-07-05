@@ -55,7 +55,7 @@ const LoginForm = () => {
                         <h2 className="login-title"> IIT Bhilai Delivery Service </h2>
                     </div>
                     <h5 className='login-text'>Log in to your account</h5>
-                    <p className='login-texts'>Don't have an account? <a href="/register-Admin">Sign Up</a></p>
+                    <p className='login-texts'>Don't have an account? <a href="/register">Sign Up</a></p>
 
                     <div className="divider">
                         <hr />

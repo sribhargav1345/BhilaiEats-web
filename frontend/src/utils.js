@@ -13,3 +13,10 @@ export const getUserFromToken = () => {
         return null;
     }
 };
+
+export const TokenOnly = () => {
+    const token = Cookies.get('authToken');
+    if (!token) return null;
+
+    return token;
+}

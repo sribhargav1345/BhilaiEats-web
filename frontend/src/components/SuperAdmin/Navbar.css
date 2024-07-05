@@ -1,0 +1,50 @@
+.items{
+    display: flex;
+    align-items: center;
+}
+
+.navbar{
+    background-color: rgb(254, 241, 216);
+}
+
+.navbar-logo{
+    height: 50px;
+    width: 50px;
+    margin-left: 20px;
+}
+
+.heading{
+    margin-left: 20px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.navbar-collapse2 {
+    display: flex;
+    justify-content: space-between; /* Or adjust as needed */
+}
+
+#profile-icon{
+    height: 35px;
+    width: 35px;
+}
+
+@media (min-width: 469px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .navbar-collapse {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 468px) {
+    .navbar-collapse {
+        display: none;
+    }
+
+    .navbar-collapse.show {
+        display: block !important;
+    }
+}

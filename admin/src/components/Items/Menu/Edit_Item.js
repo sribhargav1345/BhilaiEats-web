@@ -108,7 +108,7 @@ export default function EditItem({ item, handlePopupClose }) {
                                     <input type='text' className='form-control' value={quantity} onChange={(e) => setQuantity(e.target.value)} />
                                 </label>
                             </div>
-                            <button type='submit' className='btn btn-primary'>Submit</button>
+                            <button type='submit' className='btn btn-primary me-2'>Submit</button>
                             <button type='button' className='btn btn-secondary' onClick={togglePopup}>Close</button>
                         </form>
                     </div>

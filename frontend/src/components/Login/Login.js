@@ -26,7 +26,16 @@ const LoginForm = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        const response = await fetch("https://bhilaieats-web.onrender.com/api/auth/login", {
+        let url;
+
+        if(email === "mainaccount@gmail.com"){
+            url = "https://bhilaieats-web.onrender.com/api/auth/loginSuperAdmin";
+        }
+        else {
+            url = "https://bhilaieats-web.onrender.com/api/auth/login";
+        }
+
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -45,6 +54,11 @@ const LoginForm = () => {
         const authToken = result.authToken;
 
         Cookies.set('authToken', authToken, { expires: 1, sameSite: 'Lax' });
+        
+        if(email === "mainaccount@gmail.com"){
+            navigate("/superadmin");
+            return;
+        }
 
         navigate("/");
     };

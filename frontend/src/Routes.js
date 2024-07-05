@@ -8,6 +8,7 @@ import Login from './screens/Login/Login';
 import Signup from './screens/Signup/Signup';
 import InsideShops from './screens/InsideShops/InsideShops';
 import Checkout from './screens/Checkout/Checkout';
+import SuperAdmin from './screens/SuperAdmin-Related/page';
 
 function Routing() {
   return (
@@ -20,6 +21,7 @@ function Routing() {
           <Route exact path="/user" element={<Home />} />
           <Route exact path="/shop/:shop_id" element={<InsideShops />} />
           <Route exact path="/checkout" element={<Checkout />} />
+          <Route exact path="/superadmin" element={<SuperAdmin />} />
         </Routes>
       </Router>
     </Provider>

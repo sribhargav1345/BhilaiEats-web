@@ -80,14 +80,14 @@
     margin-bottom: 1rem;
   }
   
-  .btn-primary {
+  .addingshopbutton {
     background-color: #007bff;
     border: none;
     border-radius: 25px;
     padding: 0.5rem 2rem;
   }
   
-  .btn-primary:hover {
+  .addingshopbutton:hover {
     background-color: #0056b3;
   }
   

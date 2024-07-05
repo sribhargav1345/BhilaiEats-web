@@ -1,54 +1,9 @@
 const express = require('express');
-const { v4: uuidv4 } = require('uuid');
-
 const router = express.Router();
 
 const Canteen = require('../models/Canteen');
 const Items = require("../models/Items");
 const Categories = require("../models/Categories");
-
-const { validationRules, handleValidationErrors } = require('../middlewares/Shops');
-const { authMiddleware } = require('../middlewares/User');
-
-
-function generateShortUuid() {
-    return uuidv4().replace(/-/g, '').slice(0, 6); 
-}
-
-
-// Adding shops by SuperAdmin
-router.post("/shops", validationRules, handleValidationErrors, async(req,res) => {
-
-    try{
-        const { shopname, name, email, contact, image, description } = req.body;
-
-        const shop_name = await Canteen.findOne({ shopname });
-        if(shop_name){
-            return res.status(400).json({ error: "Shop exists with the same name" });
-        }
-
-        const code = generateShortUuid();
-
-        const newShop = new Canteen({
-            shopname,
-            name,
-            email,
-            contact,
-            image,
-            description,
-            code
-        });
-
-        await newShop.save();
-
-        return res.json({ success: true, message: "Shop Added Successfully" });
-    }
-    catch(err){
-        console.error('Error adding shop:', err);
-        return res.status(500).json({ success: false, error: "Internal server error" });
-    }
-});
-
 
 // Getting all shops by User 
 router.get("/shops", async(req,res) => {

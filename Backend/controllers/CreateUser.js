@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+
 const User = require("../models/Users");
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+
 const { validationRules, handleValidationErrors, authMiddleware } = require('../middlewares/User');
 
 const jwtSecret = process.env.JWT_SECRET_USER || 'default_one';

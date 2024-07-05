@@ -1,0 +1,62 @@
+.shop-super{
+    margin-top: 6vh;
+    margin-left: 6vw;
+}
+
+.shop-super hr{
+    width: 80%;
+}
+
+.first-heading{
+    margin-top: 40px;
+}
+.shop-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-wrapper {
+    overflow: hidden;
+    width: 90%;
+    max-width: 100%;
+}
+
+.first-heading {
+    margin-top: 40px;
+}
+
+.shop-slideri {
+    margin: 0 4%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 95%;
+}
+
+.shop-card-wrappery {
+    flex: 1 0 30%; 
+    max-width: 30%; 
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 auto; 
+}
+
+.carousel-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .shop-card-wrappery {
+        flex: 1 0 45%;
+        max-width: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-card-wrappery {
+        flex: 1 0 100%;
+        max-width: 100%;
+    }
+}

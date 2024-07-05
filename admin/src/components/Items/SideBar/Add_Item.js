@@ -63,7 +63,7 @@ export default function AddItem() {
 
     return (
         <div className='add-item'>
-            <button className='btn btn-primary btn-md ms-3' onClick={togglePopup}>Add Item</button>
+            <button className='btn btn-primary btn-md ms-3 addingitembutton' onClick={togglePopup}>Add Item</button>
             {showPopup && (
                 <div className='popup'>
                     <div className='popup-inner'>
@@ -104,8 +104,8 @@ export default function AddItem() {
                                     <input type='text' className='form-control' value={quantity} onChange={(e) => setQuantity(e.target.value)} />
                                 </label>
                             </div>
-                            <button type='submit' className='btn btn-primary'>Submit</button>
-                            <button type='button' className='btn btn-secondary' onClick={togglePopup}>Close</button>
+                            <button type='submit' className='btn btn-primary changesome'>Submit</button>
+                            <button type='button' className='btn btn-secondary changesome' onClick={togglePopup}>Close</button>
                         </form>
                     </div>
                 </div>

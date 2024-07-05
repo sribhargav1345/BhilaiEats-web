@@ -38,6 +38,7 @@ app.use("/api", require("./controllers/Orders"));
 app.use("/api", require("./controllers/Shops"));
 app.use("/api", require("./controllers/CheckOut"));
 app.use("/api", require("./controllers/AdminFoods"));
+app.use("/api", require("./controllers/SuperAdmin"));
 
 const server = http.createServer(app);
 setupSocket(server);
