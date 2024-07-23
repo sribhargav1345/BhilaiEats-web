@@ -4,6 +4,7 @@ import Navbar from "../../components/Home-page/Navbar/Navbar";
 import Carousel from "../../components/Home-page/Carousel/Carousel";
 import Footer from "../../components/Home-page/Footer/Footer";
 import ShopCards from "../../components/ShopCards/ShopCards";
+import Mind from "../../components/Home-page/Mind/Mind";
 
 export default function Home() {
     const [search, setSearch] = useState('');
@@ -13,7 +14,7 @@ export default function Home() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await fetch('https://bhilaieats-web.onrender.com/api/shops', {
+                const response = await fetch('http://localhost:5000/api/shops', {
                     method: "GET",
                     headers: {
                         'Content-Type': "application/json",
@@ -79,6 +80,7 @@ export default function Home() {
                     <button onClick={handleNextClick} disabled={currentIndex >= shops.length - 3} className="carousel-button">{">"}</button>
                 </div>
             </div>
+            <Mind />
             <Footer />
         </div>
     );

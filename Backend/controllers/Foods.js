@@ -70,6 +70,25 @@ router.get("/categories", async(req,res) => {
     }
 });
 
+// Adding this for Mindpage
+router.get("/categories/:category_name", async(req,res) => {
+    try{
+        let { category_name } = req.params;
+
+        const categories_needed = await Category.find({ categoryname: category_name });
+
+        const shopNames = categories_needed.map(category => category.shop);
+
+        const shops = await Canteen.find({ shopname: { $in: shopNames } });
+
+        return res.status(200).json({ success: true, data: shops });
+    }
+    catch(error){
+        console.error('Error retrieving Categories Searches:', error);
+        res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+});
+
 // Edit Foods by Shop Owner 
 router.put("/edit/:item_id", authMiddleware, async (req, res) => {
     try {

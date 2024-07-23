@@ -24,8 +24,9 @@ const OrderSchema = new Schema({
     },
     status: {
         type: String,
+        enum: ['pending', 'accepted', 'rejected'],
         default: 'pending'
     }   
-}, { collection: 'orders' });
+}, { timestamps: true },{ collection: 'orders' });
 
 module.exports = mongoose.model('Order', OrderSchema);

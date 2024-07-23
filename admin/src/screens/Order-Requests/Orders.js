@@ -8,7 +8,7 @@ import "./Orders.css";
 import Navbar from '../../components/OrderRequests/Navbar/Navbar';
 import Ordering from '../../components/OrderRequests/Orders/Orders';
 
-const SOCKET_URL = 'https://bhilaieats-web.onrender.com';
+const SOCKET_URL = 'http://localhost:5000';
 const socket = io(SOCKET_URL, {
   transports: ['websocket'],
   secure: true
@@ -60,7 +60,7 @@ export default function Orders() {
           <h4>Order Requests</h4>
           <hr id="line" />
           {orders.length === 0 ? (
-            <p>No orders available.</p>
+            <h3 style={{ margin: "150px" }}> Page is in working mode </h3>
           ) : (
             orders.map((order) => (
               <div key={order._id} className="order-item">
