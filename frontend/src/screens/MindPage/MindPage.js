@@ -14,7 +14,7 @@ export default function MindPage() {
 
     useEffect(() => {
         const loadShops = async() => {
-            const response = await fetch(`http://localhost:5000/api/categories/${CategoryName}`, {
+            const response = await fetch(`https://bhilaieats-web.onrender.com/api/categories/${CategoryName}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
