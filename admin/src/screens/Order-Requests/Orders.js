@@ -16,7 +16,7 @@ export default function Orders() {
 
     if(owner){
       const loadOrders = async() => {
-        const response = await fetch(`http://localhost:5000/api/orders/shop/${owner.contact}` , {
+        const response = await fetch(`https://bhilaieats-web.onrender.com/api/orders/shop/${owner.contact}` , {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ export default function Orders() {
       loadOrders();
 
       const loadAccepted = async() => {
-        const response = await fetch(`http://localhost:5000/api/orders/shop-accepted/${owner.contact}` , {
+        const response = await fetch(`https://bhilaieats-web.onrender.com/api/orders/shop-accepted/${owner.contact}` , {
           method: "GET",
           headers: {
             'Content-Type': 'application/json'

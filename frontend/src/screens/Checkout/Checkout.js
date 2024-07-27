@@ -61,7 +61,7 @@ export default function Checkout() {
         if (user && user.contact) {
             const fetchOrderStatus = async () => {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/orders/status/${user.contact}`, {
+                    const response = await fetch(`https://bhilaieats-web.onrender.com/api/orders/status/${user.contact}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ export default function Checkout() {
             };
 
             try {
-                const response = await fetch("http://localhost:5000/api/orders", {
+                const response = await fetch("https://bhilaieats-web.onrender.com/api/orders", {
                     method: "POST",
                     headers: {
                         'Content-Type': "application/json"

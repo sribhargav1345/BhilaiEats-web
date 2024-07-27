@@ -14,7 +14,7 @@ export default function Ordering({ order }) {
         console.log(order);
 
         const postAcception = async() => {
-            const response = await fetch(`http://localhost:5000/api/orders/${order.orderId}`, {
+            const response = await fetch(`https://bhilaieats-web.onrender.com/api/orders/${order.orderId}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': "application/json"
@@ -41,7 +41,7 @@ export default function Ordering({ order }) {
 
         const postRejection = async() => {
 
-            const response = await fetch(`http://localhost:5000/api/orders/${order.orderId}`, {
+            const response = await fetch(`https://bhilaieats-web.onrender.com/api/orders/${order.orderId}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': "application/json"
@@ -68,7 +68,7 @@ export default function Ordering({ order }) {
 
         const postSent = async() => {
 
-            const response = await fetch(`http://localhost:5000/api/orders/${order.orderId}`, {
+            const response = await fetch(`https://bhilaieats-web.onrender.com/api/orders/${order.orderId}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': "application/json"
