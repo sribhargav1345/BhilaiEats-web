@@ -56,7 +56,7 @@ const MenuItem = ({ item, shop }) => {
           </div>
           <div className='d-flex'>
             <p>₹{item.price}</p>
-            {item.quantity !== undefined ? (<span className='ms-2'> for {item.quantity} </span>) : (null)}
+            {(item.quantity !== undefined && item.quantity !==null) ? (<span className='ms-2'> for {item.quantity} </span>) : (null)}
           </div>
           <p>{item.description}</p>
           <button className='btn btn-md btn-warning' onClick={handleAddToCart}>Add</button>

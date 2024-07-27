@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 
-const http = require("http");
-
 require('dotenv').config();
 
 const cookieParser = require('cookie-parser');
@@ -12,7 +10,6 @@ const helmet = require('helmet');
 const port = 5000;
 
 const mongoDB = require("./db");
-const { setupSocket } = require('./socket/socket.js');
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
 
@@ -40,11 +37,7 @@ app.use("/api", require("./controllers/CheckOut"));
 app.use("/api", require("./controllers/AdminFoods"));
 app.use("/api", require("./controllers/SuperAdmin"));
 
-const server = http.createServer(app);
-setupSocket(server);
-
-
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
 

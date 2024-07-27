@@ -1,20 +1,55 @@
-.orders-page{
+.orders-page {
     display: flex;
+    padding: 20px;
 }
 
-.order-requests{
-    width: 50%;
+.order-requests {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    max-height: 83vh;
 }
 
-.order-requests h4{
-    margin: 8vh 0 0 8vw;
+.order-requests h4 {
+    margin: 7vh 0 0 5vw;
 }
 
-#line{
-    margin-left: 8vw;
-    margin-right: 6vw;
+#line {
+    margin-left: 5vw;
+    margin-right: 5vw;
 }
 
-.requests-accepted{
-    width: 50%;
+#line2{
+    margin-right: 3vw;
+}
+
+.order-list {
+    overflow-y: auto;  
+    margin-top: 10px;  
+    flex-grow: 1;  
+}
+
+.accepted-list {
+    overflow-y: auto;  
+    margin-top: 10px;  
+    flex-grow: 1;  
+}
+
+.order-item {
+    margin-bottom: 20px;  
+}
+
+.accepted-item {
+    margin-bottom: 20px;  
+}
+
+.requests-accepted {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    max-height: 83vh;
+}
+
+.requests-accepted h4{
+    margin: 7vh 0 0 0;
 }

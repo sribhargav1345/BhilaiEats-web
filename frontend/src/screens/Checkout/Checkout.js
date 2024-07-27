@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Checkout.css';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,13 +13,16 @@ import cartempty from "../../Assests/cartempty.png";
 
 import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert';
+import { clearCart } from '../../redux/CartSlice';
 
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { useSocket } from '../../context/socket-context'; 
 
 export default function Checkout() {
+    
     const items = useSelector(state => state.cart.cartItems);
     const shop = useSelector(state => state.cart.shop);
+
+    const dispatch = useDispatch();
 
     const [user, setUser] = useState(null);
     const [orderStatus, setOrderStatus] = useState(null);
@@ -27,8 +30,6 @@ export default function Checkout() {
     const total = items.reduce((sum, item) => sum + item.price * item.qnty, 0);
     const deliveryFee = 2.50;
     const GSTfee = 0.03 * (total);
-
-    const socket = useSocket();
 
     useEffect(() => {
         const token = Cookies.get('authToken');
@@ -40,27 +41,56 @@ export default function Checkout() {
                 contact: decodedToken.user.contact,
             };
             setUser(currentUser);
-
-            if (socket && currentUser.contact) {
-
-                socket.emit('join-user', currentUser.contact);
-                console.log(`Joined room for user: user-${currentUser.contact}`);
-
-                socket.on('accept-order', (order) => {
-                    console.log('Order Accepted:', order);
-                    setOrderStatus('accepted');
-                });
-
-                socket.on('reject-order', (order) => {
-                    console.log('Order Rejected:', order);
-                    setOrderStatus('rejected');
-                });
-            }
         }
-    }, [socket]);
+    }, []);
 
-    const placeOrder = () => {
-        if (socket && user) {
+    useEffect(() => {
+        const token = Cookies.get('authToken');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const currentUser = {
+                name: decodedToken.user.name,
+                email: decodedToken.user.email,
+                contact: decodedToken.user.contact,
+            };
+            setUser(currentUser);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (user && user.contact) {
+            const fetchOrderStatus = async () => {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/orders/status/${user.contact}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+        
+                    const result = await response.json();
+                    if (response.ok) {
+                        setOrderStatus(result.order.status);
+                    }
+        
+                } catch (error) {
+                    console.error("Error fetching order status", error);
+                }
+            };
+
+            fetchOrderStatus();
+            // Optionally, set an interval to fetch the order status periodically
+            const intervalId = setInterval(fetchOrderStatus, 30000); // fetch every 30 seconds
+
+            // Clean up interval on unmount
+            return () => clearInterval(intervalId);
+        }
+    }, [user]);
+
+    const priced = total + GSTfee;
+
+    const placeOrder = async () => {
+        if(user && user.email) {
             const order = {
                 items,
                 shop,
@@ -69,10 +99,34 @@ export default function Checkout() {
                     email: user.email,
                     contact: user.contact
                 },
-                status: 'pending'
+                status: 'pending',
+                price: priced
             };
-            socket.emit('placeOrder', order);
-            console.log("Order request sent to the shop owner");
+
+            try {
+                const response = await fetch("http://localhost:5000/api/orders", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': "application/json"
+                    },
+                    body: JSON.stringify(order)
+                });
+
+                const result = await response.json();
+                if (!result.success || !response.ok) {
+                    console.log("Error in creating order");
+                    alert("Error in Creating Order, we are under maintenance");
+                    return;
+                }
+
+                alert("Order Request Sent");
+                dispatch(clearCart());
+
+            } catch (err) {
+                console.log("Error in creating order", err);
+                alert("Error in Creating Order, we are under maintenance");
+                return;
+            }
         }
     };
 
@@ -109,17 +163,14 @@ export default function Checkout() {
                         </div>
                         <BillDetails total={total} deliveryFee={deliveryFee} GSTfee={GSTfee} />
                         <button className='checkout-btn' onClick={handlePlaceOrder}> Place Order </button>
-                        {/* <button className="checkout-btn" onClick={makePayment}>Proceed to Payment</button> */}
-                        {orderStatus && (
-                            <div className={`order-status ${orderStatus}`}>
-                                Order Status: {orderStatus === 'accepted' ? 'Accepted' : 'Rejected'}
-                            </div>
-                        )}
                     </div>
                 ) : (
                     <div className='cartisempty'>
                         <img src={cartempty} alt='Your Cart is Empty' />
                         <Link to="/"> <button type='button' className='btn btn-success button-to-home'> Go To Home Page</button> </Link>
+                        <div className='mt-3'>
+                            <p> <strong> Order Status: </strong> {orderStatus} </p>
+                        </div>
                     </div>
                 )}
             </div>

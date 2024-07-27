@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const OrderSchema = new Schema({
+    orderId: {
+        type: String,
+        required: true
+    },
     items: {
         type: Array
     },
@@ -22,9 +26,13 @@ const OrderSchema = new Schema({
             required: true
         } 
     },
+    price: {
+        type: Number,
+        required: true
+    },
     status: {
         type: String,
-        enum: ['pending', 'accepted', 'rejected'],
+        enum: ['pending', 'accepted', 'rejected', 'sent'],
         default: 'pending'
     }   
 }, { timestamps: true },{ collection: 'orders' });

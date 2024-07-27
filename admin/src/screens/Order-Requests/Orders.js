@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-
 import { getUserFromToken } from '../../utils';
 
 import "./Orders.css";
@@ -8,49 +6,55 @@ import "./Orders.css";
 import Navbar from '../../components/OrderRequests/Navbar/Navbar';
 import Ordering from '../../components/OrderRequests/Orders/Orders';
 
-const SOCKET_URL = 'http://localhost:5000';
-const socket = io(SOCKET_URL, {
-  transports: ['websocket'],
-  secure: true
-});
-
 export default function Orders() {
+
   const [orders, setOrders] = useState([]);
+  const [accepted, setAccepted] = useState([]);
 
   useEffect(() => {
-    const token = getUserFromToken();
-    if (token) {
-      const shopName = token.shopname;
+    const owner = getUserFromToken();
 
-      socket.emit('join-shop', shopName);
+    if(owner){
+      const loadOrders = async() => {
+        const response = await fetch(`http://localhost:5000/api/orders/shop/${owner.contact}` , {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
 
-      socket.on('order-received', (order) => {
-        console.log('New order received:', order);
-        setOrders(prevOrders => [...prevOrders, order]);
-      });
+        const result = await response.json();
 
-      // Listen for order updates
-      socket.on('order-updated', (updatedOrder) => {
-        setOrders(prevOrders => prevOrders.map(order =>
-          order._id === updatedOrder._id ? updatedOrder : order
-        ));
-      });
+        if(!result.success || !response.ok){
+          alert("Error in Fetching Orders");
+          return;
+        }
 
-      // Cleanup on component unmount
-      return () => {
-        socket.off('order-received');
-        socket.off('order-updated');
+        setOrders(result.orders);
       };
+      loadOrders();
+
+      const loadAccepted = async() => {
+        const response = await fetch(`http://localhost:5000/api/orders/shop-accepted/${owner.contact}` , {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const result = await response.json();
+
+        if(!result.success || !response.ok){
+          alert("Error in Fetching Orders");
+          return;
+        }
+
+        setAccepted(result.orders);
+      };
+      loadAccepted();
+
     }
-  }, []);
-
-  const acceptOrder = (order) => {
-    socket.emit('accept-order', order._id, order.shop.name, order.user.contact);
-  };
-
-  const rejectOrder = (order) => {
-    socket.emit('reject-order', order._id, order.shop.name, order.user.contact);
-  };
+  },[orders]);
 
   return (
     <div>
@@ -59,21 +63,28 @@ export default function Orders() {
         <div className='order-requests'>
           <h4>Order Requests</h4>
           <hr id="line" />
-          {orders.length === 0 ? (
-            <h3 style={{ margin: "150px" }}> Page is in working mode </h3>
-          ) : (
-            orders.map((order) => (
-              <div key={order._id} className="order-item">
-                <Ordering order={order} />
-                <button onClick={() => acceptOrder(order)}>Accept</button>
-                <button onClick={() => rejectOrder(order)}>Reject</button>
-              </div>
-            ))
-          )}
+          <div className="order-list">
+            {orders.length === 0 ? (
+              <h5 style={{ marginLeft: '20vw'}}> No Orders Received </h5>
+            ) : (
+              orders.map((order) => (
+                <div key={order._id} className="order-item">
+                  <Ordering order={order} />
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <div className='requests-accepted'>
           <h4>Accepted Requests</h4>
-          {/* Show accepted requests if you want to separate them */}
+          <hr id="line2" />
+          <div className="accepted-list">
+              {accepted.map((order) => (
+                <div key={order._id} className="accepted-item">
+                  <Ordering order={order} />
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </div>

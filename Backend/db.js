@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv');
 
+// const Order = require("./models/Orders");
+
 dotenv.config();
 
 const mongoDB = async() => {
@@ -20,3 +22,4 @@ const mongoDB = async() => {
 }
 
 module.exports = mongoDB;
+
