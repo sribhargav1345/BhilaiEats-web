@@ -30,10 +30,10 @@ Test credentials for SuperAdmin (login with these credentials in user website):
 3. Admins can Add/Remove/Edit the Items present in the shop.
 4. For seamless User experience, I have used Fuse.js for Searching Items, users can also filter items by provided categories.
 5. User can place the order, which Admin should accept it, inorder to confirm the order.
-6. SuperAdmin can add and remove the shops, as per required
-7. I am still working on placing orders, and receiving orders by admin.
+6. Users and Admin can view the realtime Update of the Order, that user is placed
+7. SuperAdmin can add and remove the shops, as per required
 
 **Technical Terms:**
 * I have used ReactJS, Bootstrap for Frontend and NodeJs,MongoDB,ExpressJs for Backend purpose
 * For Add to Cart purpose, I have used React-Redux for state management.
-* I am using Socket.IO for real-time connections between the User and Admin. This ensures that order status notifications are delivered quickly and efficiently to both clients.
+* I have used several libraries like React-toast, Fuse.js to enhance the user experience 
