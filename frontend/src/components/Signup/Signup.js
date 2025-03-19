@@ -69,7 +69,7 @@ const SignUpForm = () => {
                 <div className="signup-card">
                     <div className='d-flex flex-row'>
                         <img src={book_icon} alt="icon" style={{ height: '30px', width: '30px' }} />
-                        <h2 className="signup-title ms-3">Library Management System</h2>
+                        <h2 className="signup-title ms-3">IIT Bhilai Delivery Service</h2>
                     </div>
                     <h5 className='mb-2'>Register with your account</h5>
                     <p className='signup-login'>Aldready have an account? <a href="/login">Login</a></p>
